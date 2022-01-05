@@ -28,7 +28,7 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
 
         checkIfOnboardingIsComplete { isOnboarded in
             
-            /*guard isOnboarded else {
+            guard isOnboarded else {
                 let onboardCard = OCKSurveyTaskViewController(
                                    taskID: "onboarding",
                                    eventQuery: OCKEventQuery(for: date),
@@ -41,9 +41,9 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
                 listViewController.appendViewController(onboardCard, animated: false)
 
                 return
-            }*/
+            }
             
-            //self.getOnboardingResults()
+            self.getOnboardingResults()
             
             let identifiers = ["betablocker"]
             var query = OCKTaskQuery(for: date)
