@@ -62,6 +62,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
             NSLog("EventKit Successfully Authorized.")
         }
+        
+        seedTasks()
 
         return true
     }
@@ -257,6 +259,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // Always call the completion handler when done.
         completionHandler()
+    }
+    
+    private func seedTasks() {
+        let onboardSchedule = OCKSchedule.dailyAtTime(
+                            hour: 0, minutes: 0,
+                            start: Date(), end: nil,
+                            text: "Task Due!",
+                            duration: .allDay
+                        )
+
+        var onboardTask = OCKTask(
+            id: "onboarding",
+            title: "Onboard",
+            carePlanUUID: nil,
+            schedule: onboardSchedule
+        )
+        onboardTask.instructions = "You'll need to agree to some terms and conditions before we get started!"
+        onboardTask.impactsAdherence = false
+        
+        let betablockerSchedule = OCKSchedule.dailyAtTime(hour: 0, minutes: 0, start: Date(), end: nil, text: "Beta-blocker!", duration: .allDay)
+        
+        //Should add a TaskID-file
+        var betablockerTask = OCKTask(id: "betablocker", title: "Betablocker", carePlanUUID: nil, schedule: betablockerSchedule)
+        betablockerTask.instructions = "Take your beta-blocker medication"
+        
+        storeManager.store.addAnyTasks([betablockerTask, onboardTask], callbackQueue: .main) {result in
+            switch result {
+            
+            case let .success(tasks):
+                print("in Appdelegate -> success")
+                self.logger.info("Seeded \(tasks.count) tasks")
+            
+            case let .failure(error):
+                print("in AppDelegate -> fail")
+                self.logger.warning("Failed to seed tasks \(error as NSError)")
+            }
+        }
     }
 
     // MARK: - UISceneSession Lifecycle
