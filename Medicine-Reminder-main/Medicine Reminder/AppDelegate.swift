@@ -9,17 +9,26 @@ import EventKit
 import HealthKit
 import UIKit
 import UserNotifications
+import CareKit
+import CareKitStore
+import os.log
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     let heartRateQuantity = HKUnit(from: "count/min")
     let healthStore = HKHealthStore()
     
+    //Logger
+    let logger = Logger()
+    
     let eventStore = EKEventStore()
     let eventHandler = EventHandler()
 
     let userData = UserData()
     let notificationHandler = NotificationHandler()
+    
+    //CareKit Store Manager
+    let storeManager = OCKSynchronizedStoreManager(wrapping: OCKStore(name: "com.apple.medrem.carekitstore", type: .inMemory))
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         notificationHandler.NotificationAuthorizationHandler()
