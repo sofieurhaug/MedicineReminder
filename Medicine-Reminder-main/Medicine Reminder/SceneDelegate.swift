@@ -19,14 +19,27 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         
         let userData = (UIApplication.shared.delegate as! AppDelegate).userData
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let manager = appDelegate.storeManager
 
-        // Create the SwiftUI view that provides the window contents.
-        let contentView = ContentView().environmentObject(userData)
+        let care = CareFeedViewController(userData: userData, storeManager: manager)
+        care.title = "Adherence"
+        care.tabBarItem = UITabBarItem(title: "Adherence", image: UIImage(systemName: "pills.fill"), tag: 0)
+        
+        let insights = InsightsViewController(storeManager: manager)
+        insights.title = "Insights"
+        insights.tabBarItem = UITabBarItem(title: "Insights", image: UIImage(systemName: "heart.text.square.fill"), tag: 1)
+        
+        let root = UITabBarController()
+        let careTab = UINavigationController(rootViewController: care)
+        let insightsTab = UINavigationController(rootViewController: insights)
+        root.setViewControllers([careTab, insightsTab], animated: false)
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = UIHostingController(rootView: contentView)
+            window.rootViewController = root
             self.window = window
             window.makeKeyAndVisible()
         }
