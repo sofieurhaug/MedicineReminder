@@ -115,8 +115,11 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
             query: query,
             callbackQueue: .main) { result in
             print("getting onboarding results")
-            print(result)
+    
+                
         }
+        
+        
     }
     
     // MARK: SurveyTaskViewControllerDelegate
