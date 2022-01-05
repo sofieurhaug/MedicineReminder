@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		4F3525CA2785DE0D00111C1B /* ResearchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F3525C72785DE0000111C1B /* ResearchKit.framework */; platformFilter = ios; };
 		4F3525CB2785DE0D00111C1B /* ResearchKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4F3525C72785DE0000111C1B /* ResearchKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4F3525D62785E0C200111C1B /* CareKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F3525D52785E0C200111C1B /* CareKit */; };
+		4F3525D82785E0C200111C1B /* CareKitFHIR in Frameworks */ = {isa = PBXBuildFile; productRef = 4F3525D72785E0C200111C1B /* CareKitFHIR */; };
+		4F3525DA2785E0C200111C1B /* CareKitStore in Frameworks */ = {isa = PBXBuildFile; productRef = 4F3525D92785E0C200111C1B /* CareKitStore */; };
+		4F3525DC2785E0C200111C1B /* CareKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4F3525DB2785E0C200111C1B /* CareKitUI */; };
 		8280F597256561B100CEAF23 /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8280F596256561B100CEAF23 /* BubbleView.swift */; };
 		8280F59D25657C5E00CEAF23 /* EditBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8280F59C25657C5E00CEAF23 /* EditBoundary.swift */; };
 		8280F5A7256915D000CEAF23 /* HealthGroupBoxStyleNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8280F5A6256915D000CEAF23 /* HealthGroupBoxStyleNav.swift */; };
@@ -156,8 +160,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F3525D62785E0C200111C1B /* CareKit in Frameworks */,
 				4F3525CA2785DE0D00111C1B /* ResearchKit.framework in Frameworks */,
+				4F3525DC2785E0C200111C1B /* CareKitUI in Frameworks */,
 				829F3C3D25651778002C4490 /* HealthKit.framework in Frameworks */,
+				4F3525D82785E0C200111C1B /* CareKitFHIR in Frameworks */,
+				4F3525DA2785E0C200111C1B /* CareKitStore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,6 +328,12 @@
 				829F3C0725650F72002C4490 /* PBXTargetDependency */,
 			);
 			name = "Medicine Reminder";
+			packageProductDependencies = (
+				4F3525D52785E0C200111C1B /* CareKit */,
+				4F3525D72785E0C200111C1B /* CareKitFHIR */,
+				4F3525D92785E0C200111C1B /* CareKitStore */,
+				4F3525DB2785E0C200111C1B /* CareKitUI */,
+			);
 			productName = "Medicine Reminder";
 			productReference = 829F3BF025650F70002C4490 /* Medicine Reminder.app */;
 			productType = "com.apple.product-type.application";
@@ -388,6 +402,9 @@
 				Base,
 			);
 			mainGroup = 829F3BE725650F70002C4490;
+			packageReferences = (
+				4F3525D42785E0C200111C1B /* XCRemoteSwiftPackageReference "CareKit" */,
+			);
 			productRefGroup = 829F3BF125650F70002C4490 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -835,6 +852,40 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4F3525D42785E0C200111C1B /* XCRemoteSwiftPackageReference "CareKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/carekit-apple/CareKit";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4F3525D52785E0C200111C1B /* CareKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F3525D42785E0C200111C1B /* XCRemoteSwiftPackageReference "CareKit" */;
+			productName = CareKit;
+		};
+		4F3525D72785E0C200111C1B /* CareKitFHIR */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F3525D42785E0C200111C1B /* XCRemoteSwiftPackageReference "CareKit" */;
+			productName = CareKitFHIR;
+		};
+		4F3525D92785E0C200111C1B /* CareKitStore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F3525D42785E0C200111C1B /* XCRemoteSwiftPackageReference "CareKit" */;
+			productName = CareKitStore;
+		};
+		4F3525DB2785E0C200111C1B /* CareKitUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F3525D42785E0C200111C1B /* XCRemoteSwiftPackageReference "CareKit" */;
+			productName = CareKitUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 829F3BE825650F70002C4490 /* Project object */;
 }
