@@ -29,15 +29,8 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
         checkIfOnboardingIsComplete { isOnboarded in
             
             guard isOnboarded else {
-                let onboardCard = OCKSurveyTaskViewController(
-                                   taskID: "onboarding",
-                                   eventQuery: OCKEventQuery(for: date),
-                                   storeManager: self.storeManager,
-                                   survey: Surveys.onboardingSurvey(),
-                                   extractOutcome: { _ in [OCKOutcomeValue(Date())] }
-                )
-                onboardCard.surveyDelegate = self
-
+                let onboardCard = SurveyViewController(taskID: "onboarding", eventQuery: OCKEventQuery(for: Date()), storeManager: self.storeManager)
+                
                 listViewController.appendViewController(onboardCard, animated: false)
 
                 return
@@ -114,8 +107,12 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
         storeManager.store.fetchAnyOutcomes(
             query: query,
             callbackQueue: .main) { result in
-            print("getting onboarding results")
-            print(result)
+                switch result {
+                case .failure:
+                    print("Failed to fetch onboarding outcomes!")
+                case let .success(outcomes):
+                    print(outcomes[0].values)
+                }
         }
     }
     
@@ -163,10 +160,59 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
 //    }
 //}
 
+
+
 private extension View {
     func formattedHostingController() -> UIHostingController<Self> {
         let viewController = UIHostingController(rootView: self)
         viewController.view.backgroundColor = .clear
         return viewController
+    }
+}
+
+
+// 1. Subclass a task view controller to customize the control flow and present a ResearchKit survey!
+class SurveyViewController: OCKInstructionsTaskViewController, ORKTaskViewControllerDelegate {
+
+    // 2. This method is called when the use taps the button!
+    override func taskView(_ taskView: UIView & OCKTaskDisplayable, didCompleteEvent isComplete: Bool, at indexPath: IndexPath, sender: Any?) {
+
+        // 2a. If the task was uncompleted, fall back on the super class's default behavior or deleting the outcome.
+        if !isComplete {
+            super.taskView(taskView, didCompleteEvent: isComplete, at: indexPath, sender: sender)
+            return
+        }
+
+        // 2b. If the user attemped to mark the task complete, display a ResearchKit survey.
+        let surveyTask = Surveys.onboardingSurvey()
+        let surveyViewController = ORKTaskViewController(task: surveyTask, taskRun: nil)
+        surveyViewController.delegate = self
+
+        present(surveyViewController, animated: true, completion: nil)
+    }
+
+    // 3. This method will be called when the user completes the survey.
+    // Extract the result and save it to CareKit's store!
+    func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: Error?) {
+        taskViewController.dismiss(animated: true, completion: nil)
+        guard reason == .completed else {
+            taskView.completionButton.isSelected = false
+            return
+        }
+        
+        // 4a. Retrieve the result from the ResearchKit survey
+        let boundaryHRsurvey = taskViewController.result.results!.first(where: { $0.identifier == "onboarding.boundaryHRStep" }) as! ORKStepResult
+        let boundaryHRResult = boundaryHRsurvey.results!.first as! ORKNumericQuestionResult
+        let boundaryAnswer = Int(truncating: boundaryHRResult.numericAnswer ?? 0)
+        
+        let medicationTimeSurvey = taskViewController.result.results!.first(where: { $0.identifier == "onboarding.medicationTimeStep" }) as! ORKStepResult
+        let medicationTimeResult = medicationTimeSurvey.results!.first as! ORKTimeOfDayQuestionResult
+        let medicationAnswer = "\(medicationTimeResult.dateComponentsAnswer?.hour ?? 0)-\(medicationTimeResult.dateComponentsAnswer?.minute ?? 0)"
+        
+        //Adding it as one answer
+        let answer = "\(boundaryAnswer)+\(medicationAnswer)"
+    
+        // 4b. Save the result into CareKit's store
+        controller.appendOutcomeValue(value: answer, at: IndexPath(item: 0, section: 0), completion: nil)
     }
 }
