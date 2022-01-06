@@ -35,7 +35,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let careTab = UINavigationController(rootViewController: care)
         let insightsTab = UINavigationController(rootViewController: insights)
         root.setViewControllers([careTab, insightsTab], animated: false)
-
+        
+        
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
