@@ -60,6 +60,10 @@ class UserData: ObservableObject {
         remindQuestion = bool
         NSLog("Changed notifyQuestion to: \(remindQuestion)")
     }
+    
+    func getDynamicBoundaryGap() -> Double {
+        return dynamicBoundaryGap
+    }
 
 
     func setRestingHRs(heartRates: Array<Double>, dates: Array<Date>) {
