@@ -111,7 +111,7 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
                 case .failure:
                     print("Failed to fetch onboarding outcomes!")
                 case let .success(outcomes):
-                    print(outcomes[0].values)
+                    print(self.userData.getDynamicBoundaryGap())
                 }
         }
     }
@@ -135,31 +135,6 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
       }
     
 }
-
-//final class SurveyViewSynchronizer: OCKSurveyTaskViewSynchronizer {
-//
-//    override func updateView(
-//        _ view: OCKInstructionsTaskView,
-//        context: OCKSynchronizationContext<OCKTaskEvents>) {
-//
-//        super.updateView(view, context: context)
-//
-//        if let event = context.viewModel.first?.first, event.outcome != nil {
-//            view.instructionsLabel.isHidden = false
-//
-////            let pain = event.answer(kind: Surveys.checkInPainItemIdentifier)
-////            let sleep = event.answer(kind: Surveys.checkInSleepItemIdentifier)
-//            //
-//
-//            view.instructionsLabel.text = """
-//                Pain: \(Int(pain))
-//                """
-//        } else {
-//            view.instructionsLabel.isHidden = true
-//        }
-//    }
-//}
-
 
 
 private extension View {
@@ -214,5 +189,7 @@ class SurveyViewController: OCKInstructionsTaskViewController, ORKTaskViewContro
     
         // 4b. Save the result into CareKit's store
         controller.appendOutcomeValue(value: answer, at: IndexPath(item: 0, section: 0), completion: nil)
+        let userData = (UIApplication.shared.delegate as! AppDelegate).userData
+        userData.setDynamicBoundaryGap(gap: Double(boundaryAnswer))
     }
 }
