@@ -18,6 +18,7 @@ class UserData: ObservableObject {
     @Published var warningDates: Array<Date> = []
     @Published var notifyQuestion: Bool = false
     @Published var remindQuestion: Bool = false
+    @Published var medicationTime: String = ""
     var lastWarnDate: Date = Date().addingTimeInterval(-604800)
 
     let notificationHandler = NotificationHandler()
@@ -29,6 +30,7 @@ class UserData: ObservableObject {
         self.dynamicBoundary = UserDefaults.standard.object(forKey: "dynamicBoundary") as? Bool ?? true
         self.warningDates = UserDefaults.standard.object(forKey: "warningDates") as? Array<Date> ?? []
         self.dynamicBoundaryGap = UserDefaults.standard.object(forKey: "dynamicBoundaryGap") as? Double ?? 3.0
+        self.medicationTime = UserDefaults.standard.object(forKey: "medicationTime") as? String ?? ""
     }
 
     func setLastRestingHR(heartRate: Double) {
@@ -50,9 +52,14 @@ class UserData: ObservableObject {
         UserDefaults.standard.set(dynamicBoundary, forKey: "dynamicBoundary")
     }
     
+    func setMedicationTime(time: String) {
+        self.medicationTime = time
+        UserDefaults.standard.set(medicationTime, forKey: "medicationTime")
+        setMedicationTimeNotification(time: time)
+    }
+    
     func changeNotifyQuestion(bool: Bool) {
         notifyQuestion = bool
-
         NSLog("Changed notifyQuestion to: \(notifyQuestion)")
     }
     
@@ -98,6 +105,22 @@ class UserData: ObservableObject {
                     print(self.lastWarnDate.addingTimeInterval(600))
                 }
             }
+        }
+    }
+    
+    func setMedicationTimeNotification (time: String) {
+        let hour = Int(time.split(separator: "-")[0]) ?? -1
+        let minute = Int(time.split(separator: "-")[1]) ?? -1
+        
+        NSLog("Checking medication time for notitication ")
+        if (hour < 0 || minute < 0) {
+            NSLog("Error: Hour or minute was negative")
+            return
+        }
+        
+        DispatchQueue.main.async {
+            NSLog("Passed medication time check")
+            self.notificationHandler.SendMedicationReminderNotification(title: "Medication time!", body: "It's time to take your medication", hour: hour, minute: hour)
         }
     }
     
@@ -163,5 +186,4 @@ class UserData: ObservableObject {
         }
         return false
     }
-
 }

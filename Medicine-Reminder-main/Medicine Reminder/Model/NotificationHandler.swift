@@ -132,6 +132,35 @@ class NotificationHandler {
         return
     }
     
+    func SendMedicationReminderNotification (title: String, body: String, hour: Int,  minute: Int) {
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = title
+        
+        var dateComponents = DateComponents()
+        dateComponents.calendar = Calendar.current
+        
+        dateComponents.hour = hour
+        dateComponents.minute = minute
+        
+        //Create trigger
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        
+        //Create request
+        let uuidString = UUID().uuidString
+        let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
+        
+        //Schedule request
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.add(request) { (error) in
+            if error != nil {
+                NSLog("Error occured while delivering notification of mediciation to center")
+            } else {
+                NSLog("Successfully delivered notification of medication to center")
+            }
+        }
+    }
+    
     // MARK: - Notification Authorization
     
     func NotificationAuthorizationHandler() {
