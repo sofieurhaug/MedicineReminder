@@ -191,5 +191,6 @@ class SurveyViewController: OCKInstructionsTaskViewController, ORKTaskViewContro
         controller.appendOutcomeValue(value: answer, at: IndexPath(item: 0, section: 0), completion: nil)
         let userData = (UIApplication.shared.delegate as! AppDelegate).userData
         userData.setDynamicBoundaryGap(gap: Double(boundaryAnswer))
+        userData.setMedicationTime(time: medicationAnswer)
     }
 }
