@@ -111,7 +111,7 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
                 case .failure:
                     print("Failed to fetch onboarding outcomes!")
                 case let .success(outcomes):
-                    print(self.userData.getDynamicBoundaryGap())
+                    print(self.userData.getTriggerBoundary())
                 }
         }
     }

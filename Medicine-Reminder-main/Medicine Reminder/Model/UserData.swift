@@ -71,6 +71,10 @@ class UserData: ObservableObject {
     func getDynamicBoundaryGap() -> Double {
         return dynamicBoundaryGap
     }
+    
+    func getTriggerBoundary() -> Double {
+        return triggerBoundary
+    }
 
 
     func setRestingHRs(heartRates: Array<Double>, dates: Array<Date>) {
