@@ -9,15 +9,17 @@ import CareKit
 import CareKitUI
 import SwiftUI
 import UIKit
+import CareKitStore
 
 
 final class InsightsViewController: OCKListViewController {
     
     let storeManager: OCKSynchronizedStoreManager
-    @EnvironmentObject var userData: UserData
+    let userData: UserData
     
-    init(storeManager: OCKSynchronizedStoreManager) {
+    init(userData: UserData, storeManager: OCKSynchronizedStoreManager) {
         self.storeManager = storeManager
+        self.userData = userData
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -30,8 +32,41 @@ final class InsightsViewController: OCKListViewController {
         
         navigationController?.navigationBar.prefersLargeTitles = true
         
+        let streakView = StreakView()
+        streakView.headerView.titleLabel.text = "Streak is 1 ❤️‍🔥"
+        
+        //Spacer view
+        appendView(streakView, animated: false)
+        
+        let betablockerSeries = OCKDataSeriesConfiguration(taskID: "betablocker", legendTitle: "Betablocker", gradientStartColor: view.tintColor, gradientEndColor: view.tintColor, markerSize: 3, eventAggregator: .countOutcomes)
+       
+        let betablockerInsight = OCKCartesianChartViewController(plotType: .scatter, selectedDate: Date(), configurations: [betablockerSeries], storeManager: storeManager)
+        
+        self.getBetablockerResults()
+        
+        appendViewController(betablockerInsight, animated: false)
+        
         //Spacer view
         appendView(UIView(), animated: false)
         
+    }
+    
+    private func getBetablockerResults () {
+        var query = OCKOutcomeQuery()
+        query.taskIDs = ["betablocker"]
+        
+        storeManager.store.fetchAnyOutcomes(
+            query: query,
+            callbackQueue: .main) { result in
+                switch result {
+                case .failure:
+                    NSLog("Failed to fetch betablocker outcomes")
+                case let .success(outcomes):
+                    NSLog("Betablocker outcomes:")
+                    NSLog("\(outcomes)")
+                    NSLog("Number of outcomes: \(outcomes.count)")
+                 
+                }
+            }
     }
 }

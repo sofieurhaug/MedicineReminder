@@ -7,6 +7,8 @@
 
 import SwiftUI
 import EventKit
+import CareKitStore
+import CareKit
 
 class UserData: ObservableObject {
     @Published var lastRestingHeartRate: Double = 0.0
@@ -19,6 +21,8 @@ class UserData: ObservableObject {
     @Published var notifyQuestion: Bool = false
     @Published var remindQuestion: Bool = false
     @Published var medicationTime: String = ""
+    @Published var streak: Int = 0
+    var lastBetablockerCompletion: Date = Date(timeIntervalSince1970: 0)
     var lastWarnDate: Date = Date().addingTimeInterval(-604800)
 
     let notificationHandler = NotificationHandler()
@@ -31,6 +35,7 @@ class UserData: ObservableObject {
         self.warningDates = UserDefaults.standard.object(forKey: "warningDates") as? Array<Date> ?? []
         self.dynamicBoundaryGap = UserDefaults.standard.object(forKey: "dynamicBoundaryGap") as? Double ?? 3.0
         self.medicationTime = UserDefaults.standard.object(forKey: "medicationTime") as? String ?? ""
+        self.streak = UserDefaults.standard.object(forKey: "streak") as? Int ?? 0
     }
 
     func setLastRestingHR(heartRate: Double) {
@@ -70,6 +75,14 @@ class UserData: ObservableObject {
     
     func getDynamicBoundaryGap() -> Double {
         return dynamicBoundaryGap
+    }
+    
+    func addStreak (taskExecutionDate: Date, yesterday: Date) {
+        if (taskExecution.day == yesterday.day) {
+            streak += 1
+            return
+        }
+        streak = 1
     }
 
 
@@ -139,6 +152,8 @@ class UserData: ObservableObject {
         warningDates.append(date)
         UserDefaults.standard.set(warningDates, forKey: "warningDates")
     }
+    
+    func setM
     
     // MARK: - Extras
     

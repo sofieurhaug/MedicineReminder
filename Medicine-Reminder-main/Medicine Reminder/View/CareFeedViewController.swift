@@ -38,41 +38,44 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
             
             self.getOnboardingResults()
             
-            let identifiers = ["betablocker"]
-            var query = OCKTaskQuery(for: date)
-            query.ids = identifiers
-            query.excludesTasksWithNoEvents = true
+            // Only show the betablocker task on the current date
+            if Calendar.current.isDate(date, inSameDayAs: Date()) {
+                let identifiers = ["betablocker"]
+                var query = OCKTaskQuery(for: date)
+                query.ids = identifiers
+                query.excludesTasksWithNoEvents = true
 
-            self.storeManager.store.fetchAnyTasks(query: query, callbackQueue: .main) { result in
-                        
-                        switch result {
-                        
-                        case .failure(let error): print("Error in fetchanytasks: \(error)")
-                        case .success(let tasks):
-                            if let betablockerTask = tasks.first(where: { $0.id == "betablocker"}) {
-                                print("Adding betablocker task")
-                                //let betablockerCard = OCKSimpleTaskViewController(
-                                let betablockerCard = OCKSimpleTaskViewController(task: betablockerTask, eventQuery: .init(for: date), storeManager: self.storeManager)
-                                listViewController.appendViewController(betablockerCard, animated: false)
+                self.storeManager.store.fetchAnyTasks(query: query, callbackQueue: .main) { result in
+                            
+                            switch result {
+                            
+                            case .failure(let error): print("Error in fetchanytasks: \(error)")
+                            case .success(let tasks):
+                                if let betablockerTask = tasks.first(where: { $0.id == "betablocker"}) {
+                                    print("Adding betablocker task")
+                                    //let betablockerCard = OCKSimpleTaskViewController(
+                                    let betablockerCard = OCKSimpleTaskViewController(task: betablockerTask, eventQuery: .init(for: date), storeManager: self.storeManager)
+                                    listViewController.appendViewController(betablockerCard, animated: false)
+                                }
+                                
+                                //MARK: Add other views than tasks here:
+                                /*let hrTitle = "Resting heartrate"
+                                let restHRview = HRView()
+                                restHRview.headerView.titleLabel.text = hrTitle
+                                restHRview.healthValueView.titleLabel.text = self.userData.isHRCurrent() ? "\(self.userData.restingHeartRates[self.userData.restingHeartRates.count - 1])" : "-.-"
+
+                                listViewController.appendView(restHRview, animated: false)
+                                
+                                let averageHRTitle = "Average HR"
+                                let averageHRView = HRView()
+                                averageHRView.headerView.titleLabel.text = averageHRTitle
+                                averageHRView.healthValueView.titleLabel.text = "\(Double(self.userData.restingHeartRates.average))"
+                                
+                                listViewController.appendView(averageHRView, animated: false)*/
+                                
                             }
-                            
-                            //MARK: Add other views than tasks here:
-                            /*let hrTitle = "Resting heartrate"
-                            let restHRview = HRView()
-                            restHRview.headerView.titleLabel.text = hrTitle
-                            restHRview.healthValueView.titleLabel.text = self.userData.isHRCurrent() ? "\(self.userData.restingHeartRates[self.userData.restingHeartRates.count - 1])" : "-.-"
-
-                            listViewController.appendView(restHRview, animated: false)
-                            
-                            let averageHRTitle = "Average HR"
-                            let averageHRView = HRView()
-                            averageHRView.headerView.titleLabel.text = averageHRTitle
-                            averageHRView.healthValueView.titleLabel.text = "\(Double(self.userData.restingHeartRates.average))"
-                            
-                            listViewController.appendView(averageHRView, animated: false)*/
-                            
-                        }
-                    }
+                }
+            }
         }
     }
             
@@ -114,6 +117,25 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
                     print(self.userData.getDynamicBoundaryGap())
                 }
         }
+    }
+    
+    private func getBetablockerResults () {
+        var query = OCKOutcomeQuery()
+        query.taskIDs = ["betablocker"]
+        
+        storeManager.store.fetchAnyOutcomes(
+            query: query,
+            callbackQueue: .main) { result in
+                switch result {
+                case .failure:
+                    NSLog("Failed to fetch betablocker outcomes")
+                case let .success(outcomes):
+                    NSLog("Betablocker outcomes:")
+                    NSLog("\(outcomes)")
+                    NSLog("Number of outcomes: \(outcomes.count)")
+                 
+                }
+            }
     }
     
     // MARK: SurveyTaskViewControllerDelegate
