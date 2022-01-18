@@ -78,6 +78,10 @@ class UserData: ObservableObject {
     func addStreak (taskExecutionDate: Date, yesterday: Date) {
         streak += 1
     }
+    
+    func removeStreak () {
+        streak = 0
+    }
 
 
     func setRestingHRs(heartRates: Array<Double>, dates: Array<Date>) {
@@ -133,6 +137,10 @@ class UserData: ObservableObject {
     
     func setLastWarnDate(date: Date) {
         self.lastWarnDate = date
+    }
+    
+    func setLostStreakNotification () {
+        
     }
     
     func increaseBoundary() {

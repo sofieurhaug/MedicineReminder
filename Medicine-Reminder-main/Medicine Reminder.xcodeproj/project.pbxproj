@@ -784,7 +784,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Medicine Reminder/Preview Content\"";
-				DEVELOPMENT_TEAM = 2LC65W424L;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Medicine Reminder/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -810,7 +810,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Medicine Reminder/Preview Content\"";
-				DEVELOPMENT_TEAM = 2LC65W424L;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Medicine Reminder/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
