@@ -40,6 +40,10 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
             
             // Only show the betablocker task on the current date
             if Calendar.current.isDate(date, inSameDayAs: Date()) {
+                let streakView = StreakView()
+                streakView.headerView.titleLabel.text = "Streak is 1 ❤️‍🔥"
+                listViewController.appendView(streakView, animated: false)
+                
                 let identifiers = ["betablocker"]
                 var query = OCKTaskQuery(for: date)
                 query.ids = identifiers
@@ -72,6 +76,14 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
                                 averageHRView.healthValueView.titleLabel.text = "\(Double(self.userData.restingHeartRates.average))"
                                 
                                 listViewController.appendView(averageHRView, animated: false)*/
+                                
+                                let betablockerSeries = OCKDataSeriesConfiguration(taskID: "betablocker", legendTitle: "Betablocker", gradientStartColor: self.view.tintColor, gradientEndColor: self.view.tintColor, markerSize: 3, eventAggregator: .countOutcomes)
+                               
+                                let betablockerInsight = OCKCartesianChartViewController(plotType: .scatter, selectedDate: Date(), configurations: [betablockerSeries], storeManager: self.storeManager)
+                                
+                                self.getBetablockerResults()
+                                
+                                listViewController.appendViewController(betablockerInsight, animated: false)
                                 
                             }
                 }

@@ -7,8 +7,6 @@
 
 import SwiftUI
 import EventKit
-import CareKitStore
-import CareKit
 
 class UserData: ObservableObject {
     @Published var lastRestingHeartRate: Double = 0.0
@@ -78,11 +76,7 @@ class UserData: ObservableObject {
     }
     
     func addStreak (taskExecutionDate: Date, yesterday: Date) {
-        if (taskExecution.day == yesterday.day) {
-            streak += 1
-            return
-        }
-        streak = 1
+        streak += 1
     }
 
 
@@ -152,9 +146,7 @@ class UserData: ObservableObject {
         warningDates.append(date)
         UserDefaults.standard.set(warningDates, forKey: "warningDates")
     }
-    
-    func setM
-    
+        
     // MARK: - Extras
     
     func getCurrentHR(rHR: Double) -> String {
