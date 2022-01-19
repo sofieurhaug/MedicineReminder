@@ -1,12 +1,14 @@
 //
-//  UserData.swift
+//  UserDataa.swift
 //  Medicine Reminder
 //
-//  Created by Jonathan Aanesen on 18/11/2020.
+//  Created by Sofie Tjønneland Urhaug on 19/01/2022.
 //
 
 import SwiftUI
 import EventKit
+import CareKit
+import CareKitStore
 
 class UserData: ObservableObject {
     @Published var lastRestingHeartRate: Double = 0.0
@@ -82,10 +84,10 @@ class UserData: ObservableObject {
 
     func removeStreak () {
         streak = 0
+    }
 
     func getTriggerBoundary() -> Double {
         return triggerBoundary
-
     }
 
 
