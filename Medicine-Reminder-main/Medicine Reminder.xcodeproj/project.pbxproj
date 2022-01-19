@@ -671,7 +671,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Medicine Reminder WatchKit Extension/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = CPN54QHQS8;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Medicine Reminder WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -680,7 +680,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.4;
-				PRODUCT_BUNDLE_IDENTIFIER = "no.jaanesen.Medicine-Reminder.watchkitapp.watchkitextension";
+				PRODUCT_BUNDLE_IDENTIFIER = "no.sturhaug.Medicine-Reminder.watchkitapp.watchkitextension";
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -698,7 +698,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Medicine Reminder WatchKit Extension/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = CPN54QHQS8;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Medicine Reminder WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -707,7 +707,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.4;
-				PRODUCT_BUNDLE_IDENTIFIER = "no.jaanesen.Medicine-Reminder.watchkitapp.watchkitextension";
+				PRODUCT_BUNDLE_IDENTIFIER = "no.sturhaug.Medicine-Reminder.watchkitapp.watchkitextension";
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -726,7 +726,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = 2LC65W424L;
+				DEVELOPMENT_TEAM = CPN54QHQS8;
 				IBSC_MODULE = Medicine_Reminder_WatchKit_Extension;
 				INFOPLIST_FILE = "Medicine Reminder WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -734,7 +734,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.4;
-				PRODUCT_BUNDLE_IDENTIFIER = "no.jaanesen.Medicine-Reminder.watchkitapp";
+				PRODUCT_BUNDLE_IDENTIFIER = "no.sturhaug.Medicine-Reminder.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -752,7 +752,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = 2LC65W424L;
+				DEVELOPMENT_TEAM = CPN54QHQS8;
 				IBSC_MODULE = Medicine_Reminder_WatchKit_Extension;
 				INFOPLIST_FILE = "Medicine Reminder WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -760,7 +760,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.4;
-				PRODUCT_BUNDLE_IDENTIFIER = "no.jaanesen.Medicine-Reminder.watchkitapp";
+				PRODUCT_BUNDLE_IDENTIFIER = "no.sturhaug.Medicine-Reminder.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -780,7 +780,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Medicine Reminder/Preview Content\"";
-				DEVELOPMENT_TEAM = 2LC65W424L;
+				DEVELOPMENT_TEAM = CPN54QHQS8;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Medicine Reminder/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -789,7 +789,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.4;
-				PRODUCT_BUNDLE_IDENTIFIER = "no.jaanesen.Medicine-Reminder";
+				PRODUCT_BUNDLE_IDENTIFIER = "no.sturhaug.Medicine-Reminder";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
@@ -806,7 +806,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Medicine Reminder/Preview Content\"";
-				DEVELOPMENT_TEAM = 2LC65W424L;
+				DEVELOPMENT_TEAM = CPN54QHQS8;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Medicine Reminder/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -815,7 +815,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.4;
-				PRODUCT_BUNDLE_IDENTIFIER = "no.jaanesen.Medicine-Reminder";
+				PRODUCT_BUNDLE_IDENTIFIER = "no.sturhaug.Medicine-Reminder";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
