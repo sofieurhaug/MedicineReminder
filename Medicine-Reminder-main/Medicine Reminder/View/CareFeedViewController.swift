@@ -126,7 +126,7 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
                 case .failure:
                     print("Failed to fetch onboarding outcomes!")
                 case let .success(outcomes):
-                    print(self.userData.getDynamicBoundaryGap())
+                    print(self.userData.getTriggerBoundary())
                 }
         }
     }
@@ -224,7 +224,7 @@ class SurveyViewController: OCKInstructionsTaskViewController, ORKTaskViewContro
         // 4b. Save the result into CareKit's store
         controller.appendOutcomeValue(value: answer, at: IndexPath(item: 0, section: 0), completion: nil)
         let userData = (UIApplication.shared.delegate as! AppDelegate).userData
-        userData.setDynamicBoundaryGap(gap: Double(boundaryAnswer))
+        userData.setTriggerBoundary(boundary: Double(boundaryAnswer))
         userData.setMedicationTime(time: medicationAnswer)
     }
 }

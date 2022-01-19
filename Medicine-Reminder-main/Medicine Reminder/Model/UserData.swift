@@ -26,7 +26,7 @@ class UserData: ObservableObject {
     let notificationHandler = NotificationHandler()
     let eventStore = EKEventStore()
 
-    
+
     init() {
         self.triggerBoundary = UserDefaults.standard.object(forKey: "triggerBoundary") as? Double ?? 0.0
         self.dynamicBoundary = UserDefaults.standard.object(forKey: "dynamicBoundary") as? Bool ?? true
@@ -44,7 +44,7 @@ class UserData: ObservableObject {
         triggerBoundary = boundary
         UserDefaults.standard.set(triggerBoundary, forKey: "triggerBoundary")
     }
-    
+
     func setDynamicBoundaryGap(gap: Double) {
         dynamicBoundaryGap = gap
         UserDefaults.standard.set(dynamicBoundaryGap, forKey: "dynamicBoundaryGap")
@@ -54,33 +54,38 @@ class UserData: ObservableObject {
         dynamicBoundary = bool
         UserDefaults.standard.set(dynamicBoundary, forKey: "dynamicBoundary")
     }
-    
+
     func setMedicationTime(time: String) {
         self.medicationTime = time
         UserDefaults.standard.set(medicationTime, forKey: "medicationTime")
         setMedicationTimeNotification(time: time)
     }
-    
+
     func changeNotifyQuestion(bool: Bool) {
         notifyQuestion = bool
         NSLog("Changed notifyQuestion to: \(notifyQuestion)")
     }
-    
+
     func changeRemindQuestion(bool: Bool) {
         remindQuestion = bool
         NSLog("Changed notifyQuestion to: \(remindQuestion)")
     }
-    
+
     func getDynamicBoundaryGap() -> Double {
         return dynamicBoundaryGap
     }
-    
+
+
     func addStreak (taskExecutionDate: Date, yesterday: Date) {
         streak += 1
     }
-    
+
     func removeStreak () {
         streak = 0
+
+    func getTriggerBoundary() -> Double {
+        return triggerBoundary
+
     }
 
 
@@ -118,67 +123,67 @@ class UserData: ObservableObject {
             }
         }
     }
-    
+
     func setMedicationTimeNotification (time: String) {
         let hour = Int(time.split(separator: "-")[0]) ?? -1
         let minute = Int(time.split(separator: "-")[1]) ?? -1
-        
+
         NSLog("Checking medication time for notitication ")
         if (hour < 0 || minute < 0) {
             NSLog("Error: Hour or minute was negative")
             return
         }
-        
+
         DispatchQueue.main.async {
             NSLog("Passed medication time check")
             self.notificationHandler.SendMedicationReminderNotification(title: "Medication time!", body: "It's time to take your medication", hour: hour, minute: hour)
         }
     }
-    
+
     func setLastWarnDate(date: Date) {
         self.lastWarnDate = date
     }
-    
+
     func setLostStreakNotification () {
-        
+
     }
-    
+
     func increaseBoundary() {
         NSLog("Increasing boundary by \(self.dynamicBoundaryGap)")
         let newValue = self.triggerBoundary + self.dynamicBoundaryGap
         setTriggerBoundary(boundary: newValue)
     }
-    
+
     func logCorrectWarning(date: Date) {
         NSLog("Logging date of correct warning")
         warningDates.append(date)
         UserDefaults.standard.set(warningDates, forKey: "warningDates")
     }
-        
+
     // MARK: - Extras
-    
+
     func getCurrentHR(rHR: Double) -> String {
         if isHRCurrent() {
                 return String(rHR)
             }
         return "--"
     }
-    
+
     func isHRCurrent() -> Bool {
         if self.dates != [] {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "EE"
-            
+
             let lastDate = dateFormatter.string(from: self.dates[self.dates.count - 1])
             let currentDate = dateFormatter.string(from: Date())
-            
+
             if lastDate == currentDate {
                 return true
             }
         }
         return false
     }
-    
+
     private func timeChecker() -> Bool {
         let calendar = Calendar.current
         let now = Date()
@@ -187,13 +192,13 @@ class UserData: ObservableObject {
             minute: 0,
             second: 0,
             of: now)!
-        
+
         let endTime = calendar.date(
             bySettingHour: 20,
             minute: 0,
             second: 0,
             of: now)!
-        
+
         if now >= startTime &&
             now <= endTime
         {
