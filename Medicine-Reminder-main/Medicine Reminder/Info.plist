@@ -24,14 +24,20 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Your camera will be used to record medication adherence.</string>
 	<key>NSHealthClinicalHealthRecordsShareUsageDescription</key>
 	<string>Your resting heart rate will be used and monitored in order to determine medicine adherence.</string>
 	<key>NSHealthShareUsageDescription</key>
 	<string>Your resting heart rate will be used and monitored in order to determine medicine adherence.</string>
 	<key>NSHealthUpdateUsageDescription</key>
 	<string>Your resting heart rate will be used and monitored in order to determine medicine adherence.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Your microphone will be used when recording videos to confirm your medication adherence.</string>
 	<key>NSRemindersUsageDescription</key>
 	<string>To schedule medicine reminders</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Speech recognition will be used to record words said</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
