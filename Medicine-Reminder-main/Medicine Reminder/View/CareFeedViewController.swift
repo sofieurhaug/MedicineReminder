@@ -24,7 +24,10 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
     }
 
     override func dailyPageViewController(_ dailyPageViewController: OCKDailyPageViewController, prepare listViewController: OCKListViewController, for date: Date) {
-
+        
+        NSLog("Refreshed!")
+        self.userData.getBetablockerResults()
+        NSLog("Streak: \(self.userData.streak)")
 
         checkIfOnboardingIsComplete { isOnboarded in
             
@@ -40,10 +43,6 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
             
             // Only show the betablocker task on the current date
             if Calendar.current.isDate(date, inSameDayAs: Date()) {
-                let streakView = StreakView()
-                streakView.headerView.titleLabel.text = "Streak is 1 ❤️‍🔥"
-                listViewController.appendView(streakView, animated: false)
-                
                 let identifiers = ["betablocker"]
                 var query = OCKTaskQuery(for: date)
                 query.ids = identifiers
@@ -57,31 +56,18 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
                             case .success(let tasks):
                                 if let betablockerTask = tasks.first(where: { $0.id == "betablocker"}) {
                                     print("Adding betablocker task")
-                                    //let betablockerCard = OCKSimpleTaskViewController(
                                     let betablockerCard = OCKSimpleTaskViewController(task: betablockerTask, eventQuery: .init(for: date), storeManager: self.storeManager)
                                     listViewController.appendViewController(betablockerCard, animated: false)
                                 }
                                 
-                                //MARK: Add other views than tasks here:
-                                /*let hrTitle = "Resting heartrate"
-                                let restHRview = HRView()
-                                restHRview.headerView.titleLabel.text = hrTitle
-                                restHRview.healthValueView.titleLabel.text = self.userData.isHRCurrent() ? "\(self.userData.restingHeartRates[self.userData.restingHeartRates.count - 1])" : "-.-"
-
-                                listViewController.appendView(restHRview, animated: false)
-                                
-                                let averageHRTitle = "Average HR"
-                                let averageHRView = HRView()
-                                averageHRView.headerView.titleLabel.text = averageHRTitle
-                                averageHRView.healthValueView.titleLabel.text = "\(Double(self.userData.restingHeartRates.average))"
-                                
-                                listViewController.appendView(averageHRView, animated: false)*/
+                                let streakView = StreakView()
+                                streakView.headerView.titleLabel.text = "Streak is \(self.userData.streak)"
+                                listViewController.appendView(streakView, animated: false)
                                 
                                 let betablockerSeries = OCKDataSeriesConfiguration(taskID: "betablocker", legendTitle: "Betablocker", gradientStartColor: self.view.tintColor, gradientEndColor: self.view.tintColor, markerSize: 3, eventAggregator: .countOutcomes)
                                
                                 let betablockerInsight = OCKCartesianChartViewController(plotType: .scatter, selectedDate: Date(), configurations: [betablockerSeries], storeManager: self.storeManager)
                                 
-                                self.getBetablockerResults()
                                 
                                 listViewController.appendViewController(betablockerInsight, animated: false)
                                 
@@ -126,7 +112,7 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
                 case .failure:
                     print("Failed to fetch onboarding outcomes!")
                 case let .success(outcomes):
-                    print(self.userData.getTriggerBoundary())
+                    NSLog("Onboarding successful")
                 }
         }
     }
@@ -142,10 +128,10 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
                 case .failure:
                     NSLog("Failed to fetch betablocker outcomes")
                 case let .success(outcomes):
-                    NSLog("Betablocker outcomes:")
-                    NSLog("\(outcomes)")
-                    NSLog("Number of outcomes: \(outcomes.count)")
-                 
+                    let lastOutcome = outcomes.last as? OCKOutcome
+                    NSLog("\(lastOutcome)")
+                    let lastOutcomeDate = lastOutcome?.createdDate ?? Date(timeIntervalSince1970: 0)
+                    self.userData.setLastBetablockerCompletion(date: lastOutcomeDate)
                 }
             }
     }

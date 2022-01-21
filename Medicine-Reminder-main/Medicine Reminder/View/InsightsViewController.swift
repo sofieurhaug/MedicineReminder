@@ -33,7 +33,7 @@ final class InsightsViewController: OCKListViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         
         let streakView = StreakView()
-        streakView.headerView.titleLabel.text = "Streak is 1 ❤️‍🔥"
+        streakView.headerView.titleLabel.text = "Streak is "
         
         //Spacer view
         appendView(streakView, animated: false)

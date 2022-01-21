@@ -24,9 +24,12 @@ class UserData: ObservableObject {
     @Published var streak: Int = 0
     var lastBetablockerCompletion: Date = Date(timeIntervalSince1970: 0)
     var lastWarnDate: Date = Date().addingTimeInterval(-604800)
+    var firstStreakRegistered: Bool = false
 
     let notificationHandler = NotificationHandler()
     let eventStore = EKEventStore()
+    let storeManager = OCKSynchronizedStoreManager(wrapping: OCKStore(name: "com.apple.medrem.carekitstore", type: .inMemory))
+    
 
 
     init() {
@@ -62,6 +65,10 @@ class UserData: ObservableObject {
         UserDefaults.standard.set(medicationTime, forKey: "medicationTime")
         setMedicationTimeNotification(time: time)
     }
+    
+    func setLastBetablockerCompletion (date: Date) {
+        lastBetablockerCompletion = date
+    }
 
     func changeNotifyQuestion(bool: Bool) {
         notifyQuestion = bool
@@ -78,11 +85,13 @@ class UserData: ObservableObject {
     }
 
 
-    func addStreak (taskExecutionDate: Date, yesterday: Date) {
+    func addStreak () {
+        NSLog("Adding Streak")
         streak += 1
     }
 
     func removeStreak () {
+        NSLog("Removing streak")
         streak = 0
     }
 
@@ -143,7 +152,11 @@ class UserData: ObservableObject {
     }
 
     func setLastWarnDate(date: Date) {
+        if (date != self.lastBetablockerCompletion) {
+            
+        }
         self.lastWarnDate = date
+        
     }
 
     func setLostStreakNotification () {
@@ -184,6 +197,49 @@ class UserData: ObservableObject {
             }
         }
         return false
+    }
+    
+    func getBetablockerResults () {
+        var query = OCKOutcomeQuery()
+        query.taskIDs = ["betablocker"]
+        
+        storeManager.store.fetchAnyOutcomes(
+            query: query,
+            callbackQueue: .main) { result in
+                switch result {
+                case .failure:
+                    NSLog("Failed to fetch betablocker outcomes")
+                case let .success(outcomes):
+                    let lastOutcome = outcomes.last as? OCKOutcome
+                    NSLog("\(lastOutcome)")
+                    let lastOutcomeDate = lastOutcome?.createdDate ?? Date(timeIntervalSince1970: 0)
+                    if (lastOutcomeDate != Date(timeIntervalSince1970: 0)) {
+                        //TODO: Gjør noe med streak siden datoen er ny
+                        //sjekk om den nye dataen er fra tidligere enn i går
+                        let differenceInDays = Calendar.current.dateComponents([.day], from: self.lastBetablockerCompletion, to: lastOutcomeDate)
+                        
+                        let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: Date()) ?? Date(timeIntervalSince1970: 0)
+                        NSLog("Yesterday: \(yesterday)")
+                        //let differenceInDays =  Calendar.current.dateComponents([.day], from: yesterday, to: lastOutcomeDate)
+                        NSLog("difference between today and yesterday: \(differenceInDays)")
+                        switch differenceInDays.day {
+                        case 0:
+                            return
+                        case 1:
+                            self.addStreak()
+                        case 19013:
+                            if(!self.firstStreakRegistered) {
+                                self.firstStreakRegistered = true
+                                self.addStreak()
+                            }
+                        default:
+                            self.removeStreak()
+                        }
+                        
+                  
+                    }
+                }
+            }
     }
 
     private func timeChecker() -> Bool {

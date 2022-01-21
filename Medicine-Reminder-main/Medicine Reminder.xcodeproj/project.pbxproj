@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F2A41E6279AAC6200D50665 /* CareKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F2A41E5279AAC6200D50665 /* CareKit */; };
+		4F2A41E8279AAC6600D50665 /* CareKitStore in Frameworks */ = {isa = PBXBuildFile; productRef = 4F2A41E7279AAC6600D50665 /* CareKitStore */; };
+		4F2A41EA279AC60600D50665 /* CareKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4F2A41E9279AC60600D50665 /* CareKitUI */; };
 		4F3525CA2785DE0D00111C1B /* ResearchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F3525C72785DE0000111C1B /* ResearchKit.framework */; platformFilter = ios; };
 		4F3525CB2785DE0D00111C1B /* ResearchKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4F3525C72785DE0000111C1B /* ResearchKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4F3525D62785E0C200111C1B /* CareKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F3525D52785E0C200111C1B /* CareKit */; };
@@ -181,6 +184,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F2A41E8279AAC6600D50665 /* CareKitStore in Frameworks */,
+				4F2A41E6279AAC6200D50665 /* CareKit in Frameworks */,
+				4F2A41EA279AC60600D50665 /* CareKitUI in Frameworks */,
 				829F3C3F2565179C002C4490 /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -381,6 +387,11 @@
 			dependencies = (
 			);
 			name = "Medicine Reminder WatchKit Extension";
+			packageProductDependencies = (
+				4F2A41E5279AAC6200D50665 /* CareKit */,
+				4F2A41E7279AAC6600D50665 /* CareKitStore */,
+				4F2A41E9279AC60600D50665 /* CareKitUI */,
+			);
 			productName = "Medicine Reminder WatchKit Extension";
 			productReference = 829F3C1325650F73002C4490 /* Medicine Reminder WatchKit Extension.appex */;
 			productType = "com.apple.product-type.watchkit2-extension";
@@ -881,6 +892,21 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4F2A41E5279AAC6200D50665 /* CareKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F3525D42785E0C200111C1B /* XCRemoteSwiftPackageReference "CareKit" */;
+			productName = CareKit;
+		};
+		4F2A41E7279AAC6600D50665 /* CareKitStore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F3525D42785E0C200111C1B /* XCRemoteSwiftPackageReference "CareKit" */;
+			productName = CareKitStore;
+		};
+		4F2A41E9279AC60600D50665 /* CareKitUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F3525D42785E0C200111C1B /* XCRemoteSwiftPackageReference "CareKit" */;
+			productName = CareKitUI;
+		};
 		4F3525D52785E0C200111C1B /* CareKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4F3525D42785E0C200111C1B /* XCRemoteSwiftPackageReference "CareKit" */;
