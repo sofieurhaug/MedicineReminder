@@ -23,12 +23,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     let eventStore = EKEventStore()
     let eventHandler = EventHandler()
+    
+    //CareKit Store Manager
+    let storeManager = OCKSynchronizedStoreManager(wrapping: OCKStore(name: "com.apple.medrem.carekitstore", type: .inMemory))
 
     let userData = UserData()
     let notificationHandler = NotificationHandler()
     
-    //CareKit Store Manager
-    let storeManager = OCKSynchronizedStoreManager(wrapping: OCKStore(name: "com.apple.medrem.carekitstore", type: .inMemory))
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         notificationHandler.NotificationAuthorizationHandler()

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F2A41E6279AAC6200D50665 /* CareKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F2A41E5279AAC6200D50665 /* CareKit */; };
+		4F2A41E8279AAC6600D50665 /* CareKitStore in Frameworks */ = {isa = PBXBuildFile; productRef = 4F2A41E7279AAC6600D50665 /* CareKitStore */; };
+		4F2A41EA279AC60600D50665 /* CareKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4F2A41E9279AC60600D50665 /* CareKitUI */; };
 		4F3525CA2785DE0D00111C1B /* ResearchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F3525C72785DE0000111C1B /* ResearchKit.framework */; platformFilter = ios; };
 		4F3525CB2785DE0D00111C1B /* ResearchKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4F3525C72785DE0000111C1B /* ResearchKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4F3525D62785E0C200111C1B /* CareKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F3525D52785E0C200111C1B /* CareKit */; };
@@ -17,6 +20,9 @@
 		4F3525E42785E35100111C1B /* InsightsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3525E32785E35100111C1B /* InsightsViewController.swift */; };
 		4F3525E52785E65B00111C1B /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 829F3C3C25651778002C4490 /* HealthKit.framework */; };
 		4F3525EA2785EF1A00111C1B /* Surveys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3525E92785EF1900111C1B /* Surveys.swift */; };
+		4FE552022790746E0018731F /* StreakView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE552012790746E0018731F /* StreakView.swift */; };
+		4FEA97F4279847E400C3C8F3 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FEA97F3279847E400C3C8F3 /* UserData.swift */; };
+		4FEA97F5279847E400C3C8F3 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FEA97F3279847E400C3C8F3 /* UserData.swift */; };
 		8280F597256561B100CEAF23 /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8280F596256561B100CEAF23 /* BubbleView.swift */; };
 		8280F59D25657C5E00CEAF23 /* EditBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8280F59C25657C5E00CEAF23 /* EditBoundary.swift */; };
 		8280F5A7256915D000CEAF23 /* HealthGroupBoxStyleNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8280F5A6256915D000CEAF23 /* HealthGroupBoxStyleNav.swift */; };
@@ -40,10 +46,8 @@
 		829F3C2125650F74002C4490 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 829F3C2025650F74002C4490 /* Assets.xcassets */; };
 		829F3C2425650F74002C4490 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 829F3C2325650F74002C4490 /* Preview Assets.xcassets */; };
 		829F3C3F2565179C002C4490 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 829F3C3E2565179C002C4490 /* HealthKit.framework */; };
-		829F3C442565203B002C4490 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829F3C432565203B002C4490 /* UserData.swift */; };
 		829F3C4D25652873002C4490 /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829F3C4C25652873002C4490 /* NotificationHandler.swift */; };
 		829F3C4E25652873002C4490 /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829F3C4C25652873002C4490 /* NotificationHandler.swift */; };
-		82C37423258A1EEE00C5CB36 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829F3C432565203B002C4490 /* UserData.swift */; };
 		82C37428258A215700C5CB36 /* EventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C37427258A215700C5CB36 /* EventHandler.swift */; };
 /* End PBXBuildFile section */
 
@@ -119,6 +123,8 @@
 		4F3525DE2785E29200111C1B /* CareFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CareFeedViewController.swift; sourceTree = "<group>"; };
 		4F3525E32785E35100111C1B /* InsightsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsViewController.swift; sourceTree = "<group>"; };
 		4F3525E92785EF1900111C1B /* Surveys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Surveys.swift; sourceTree = "<group>"; };
+		4FE552012790746E0018731F /* StreakView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakView.swift; sourceTree = "<group>"; };
+		4FEA97F3279847E400C3C8F3 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		8280F596256561B100CEAF23 /* BubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
 		8280F59C25657C5E00CEAF23 /* EditBoundary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBoundary.swift; sourceTree = "<group>"; };
 		8280F5A6256915D000CEAF23 /* HealthGroupBoxStyleNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthGroupBoxStyleNav.swift; sourceTree = "<group>"; };
@@ -149,7 +155,6 @@
 		829F3C3A2565173B002C4490 /* Medicine Reminder WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Medicine Reminder WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		829F3C3C25651778002C4490 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.2.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
 		829F3C3E2565179C002C4490 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS7.1.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
-		829F3C432565203B002C4490 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		829F3C4C25652873002C4490 /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
 		82C37427258A215700C5CB36 /* EventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -179,6 +184,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F2A41E8279AAC6600D50665 /* CareKitStore in Frameworks */,
+				4F2A41E6279AAC6200D50665 /* CareKit in Frameworks */,
+				4F2A41EA279AC60600D50665 /* CareKitUI in Frameworks */,
 				829F3C3F2565179C002C4490 /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -304,6 +312,7 @@
 				8280F596256561B100CEAF23 /* BubbleView.swift */,
 				4F3525DE2785E29200111C1B /* CareFeedViewController.swift */,
 				4F3525E32785E35100111C1B /* InsightsViewController.swift */,
+				4FE552012790746E0018731F /* StreakView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -311,9 +320,9 @@
 		829F3C5525655724002C4490 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				829F3C432565203B002C4490 /* UserData.swift */,
 				829F3C4C25652873002C4490 /* NotificationHandler.swift */,
 				82C37427258A215700C5CB36 /* EventHandler.swift */,
+				4FEA97F3279847E400C3C8F3 /* UserData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -378,6 +387,11 @@
 			dependencies = (
 			);
 			name = "Medicine Reminder WatchKit Extension";
+			packageProductDependencies = (
+				4F2A41E5279AAC6200D50665 /* CareKit */,
+				4F2A41E7279AAC6600D50665 /* CareKitStore */,
+				4F2A41E9279AC60600D50665 /* CareKitUI */,
+			);
 			productName = "Medicine Reminder WatchKit Extension";
 			productReference = 829F3C1325650F73002C4490 /* Medicine Reminder WatchKit Extension.appex */;
 			productType = "com.apple.product-type.watchkit2-extension";
@@ -484,9 +498,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FE552022790746E0018731F /* StreakView.swift in Sources */,
 				829F3BF425650F70002C4490 /* AppDelegate.swift in Sources */,
 				8280F597256561B100CEAF23 /* BubbleView.swift in Sources */,
 				82C37428258A215700C5CB36 /* EventHandler.swift in Sources */,
+				4FEA97F4279847E400C3C8F3 /* UserData.swift in Sources */,
 				4F3525EA2785EF1A00111C1B /* Surveys.swift in Sources */,
 				8280F5AC2569160200CEAF23 /* HealthValueView.swift in Sources */,
 				4F3525E42785E35100111C1B /* InsightsViewController.swift in Sources */,
@@ -494,7 +510,6 @@
 				8280F5A7256915D000CEAF23 /* HealthGroupBoxStyleNav.swift in Sources */,
 				829F3C4D25652873002C4490 /* NotificationHandler.swift in Sources */,
 				8280F5B5256919FD00CEAF23 /* HealthGroupBoxStyle.swift in Sources */,
-				829F3C442565203B002C4490 /* UserData.swift in Sources */,
 				4F3525DF2785E29200111C1B /* CareFeedViewController.swift in Sources */,
 				829F3BF825650F70002C4490 /* ContentView.swift in Sources */,
 				8280F59D25657C5E00CEAF23 /* EditBoundary.swift in Sources */,
@@ -507,8 +522,8 @@
 			files = (
 				829F3C1B25650F73002C4490 /* ContentView.swift in Sources */,
 				829F3C4E25652873002C4490 /* NotificationHandler.swift in Sources */,
-				82C37423258A1EEE00C5CB36 /* UserData.swift in Sources */,
 				8280F5D4256D094700CEAF23 /* SmallBubbleView.swift in Sources */,
+				4FEA97F5279847E400C3C8F3 /* UserData.swift in Sources */,
 				829F3C1F25650F73002C4490 /* ComplicationController.swift in Sources */,
 				829F3C1925650F73002C4490 /* HostingController.swift in Sources */,
 				829F3C1D25650F73002C4490 /* ExtensionDelegate.swift in Sources */,
@@ -877,6 +892,21 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4F2A41E5279AAC6200D50665 /* CareKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F3525D42785E0C200111C1B /* XCRemoteSwiftPackageReference "CareKit" */;
+			productName = CareKit;
+		};
+		4F2A41E7279AAC6600D50665 /* CareKitStore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F3525D42785E0C200111C1B /* XCRemoteSwiftPackageReference "CareKit" */;
+			productName = CareKitStore;
+		};
+		4F2A41E9279AC60600D50665 /* CareKitUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F3525D42785E0C200111C1B /* XCRemoteSwiftPackageReference "CareKit" */;
+			productName = CareKitUI;
+		};
 		4F3525D52785E0C200111C1B /* CareKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4F3525D42785E0C200111C1B /* XCRemoteSwiftPackageReference "CareKit" */;

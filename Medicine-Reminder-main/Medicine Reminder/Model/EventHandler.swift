@@ -32,6 +32,25 @@ class EventHandler {
         try! eventStore.save(newReminder, commit: true)
     }
     
+    func scheduleStreakReminder() {
+        guard let ekCalendar = self.eventStore.defaultCalendarForNewReminders() else { return }
+        let newReminder = EKReminder(eventStore: eventStore)
+        let calendar = Calendar.current
+        
+        newReminder.calendar = ekCalendar
+        newReminder.title = "You're about to loose your streak"
+        newReminder.priority = 1
+        
+        //let timeInterval = 60*60*24
+        
+        let dueDate = calendar.date(bySettingHour: 23, minute: 59, second: 0, of: Date())
+        
+        newReminder.dueDateComponents = Calendar.current.dateComponents([.year, .month, .day,.hour, ], from: dueDate!)
+        
+        try! eventStore.save(newReminder, commit: true)
+    
+    }
+    
     // MARK: - Event Authorization
     
     func authorizeEventKit(completion: @escaping (Bool, Error?) -> Swift.Void) {
