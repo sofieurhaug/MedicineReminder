@@ -17,7 +17,6 @@
 		4F3525DA2785E0C200111C1B /* CareKitStore in Frameworks */ = {isa = PBXBuildFile; productRef = 4F3525D92785E0C200111C1B /* CareKitStore */; };
 		4F3525DC2785E0C200111C1B /* CareKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4F3525DB2785E0C200111C1B /* CareKitUI */; };
 		4F3525DF2785E29200111C1B /* CareFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3525DE2785E29200111C1B /* CareFeedViewController.swift */; };
-		4F3525E42785E35100111C1B /* InsightsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3525E32785E35100111C1B /* InsightsViewController.swift */; };
 		4F3525E52785E65B00111C1B /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 829F3C3C25651778002C4490 /* HealthKit.framework */; };
 		4F3525EA2785EF1A00111C1B /* Surveys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3525E92785EF1900111C1B /* Surveys.swift */; };
 		4FE552022790746E0018731F /* StreakView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE552012790746E0018731F /* StreakView.swift */; };
@@ -121,7 +120,6 @@
 /* Begin PBXFileReference section */
 		4F3525C02785DE0000111C1B /* ResearchKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ResearchKit.xcodeproj; path = "../../../../../Downloads/ResearchKit-main 3/ResearchKit.xcodeproj"; sourceTree = "<group>"; };
 		4F3525DE2785E29200111C1B /* CareFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CareFeedViewController.swift; sourceTree = "<group>"; };
-		4F3525E32785E35100111C1B /* InsightsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsViewController.swift; sourceTree = "<group>"; };
 		4F3525E92785EF1900111C1B /* Surveys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Surveys.swift; sourceTree = "<group>"; };
 		4FE552012790746E0018731F /* StreakView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakView.swift; sourceTree = "<group>"; };
 		4FEA97F3279847E400C3C8F3 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
@@ -311,7 +309,6 @@
 				8280F5AB2569160200CEAF23 /* HealthValueView.swift */,
 				8280F596256561B100CEAF23 /* BubbleView.swift */,
 				4F3525DE2785E29200111C1B /* CareFeedViewController.swift */,
-				4F3525E32785E35100111C1B /* InsightsViewController.swift */,
 				4FE552012790746E0018731F /* StreakView.swift */,
 			);
 			path = View;
@@ -505,7 +502,6 @@
 				4FEA97F4279847E400C3C8F3 /* UserData.swift in Sources */,
 				4F3525EA2785EF1A00111C1B /* Surveys.swift in Sources */,
 				8280F5AC2569160200CEAF23 /* HealthValueView.swift in Sources */,
-				4F3525E42785E35100111C1B /* InsightsViewController.swift in Sources */,
 				829F3BF625650F70002C4490 /* SceneDelegate.swift in Sources */,
 				8280F5A7256915D000CEAF23 /* HealthGroupBoxStyleNav.swift in Sources */,
 				829F3C4D25652873002C4490 /* NotificationHandler.swift in Sources */,
