@@ -26,21 +26,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let care = CareFeedViewController(userData: userData, storeManager: manager)
         care.title = "Adherence"
         care.tabBarItem = UITabBarItem(title: "Adherence", image: UIImage(systemName: "pills.fill"), tag: 0)
-        
-        let insights = InsightsViewController(userData: userData, storeManager: manager)
-        insights.title = "Insights"
-        insights.tabBarItem = UITabBarItem(title: "Insights", image: UIImage(systemName: "heart.text.square.fill"), tag: 1)
-        
-        let root = UITabBarController()
-        let careTab = UINavigationController(rootViewController: care)
-        let insightsTab = UINavigationController(rootViewController: insights)
-        root.setViewControllers([careTab, insightsTab], animated: false)
+   
+        //let care = UINavigationController(rootViewController: care)
+       
         
         
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = root
+            window.rootViewController = UINavigationController(rootViewController: care)
             self.window = window
             window.makeKeyAndVisible()
         }
