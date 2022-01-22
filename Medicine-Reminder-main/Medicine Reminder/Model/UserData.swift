@@ -24,7 +24,8 @@ class UserData: ObservableObject {
     @Published var streak: Int = 0
     var lastBetablockerCompletion: Date = Date(timeIntervalSince1970: 0)
     var lastWarnDate: Date = Date().addingTimeInterval(-604800)
-    var firstStreakRegistered: Bool = false
+    var listOfRegisteredStreaks: Array<Date> = []
+    var firstStreakAdded = false
 
     let notificationHandler = NotificationHandler()
     let eventStore = EKEventStore()
@@ -87,11 +88,13 @@ class UserData: ObservableObject {
 
     func addStreak () {
         NSLog("Adding Streak")
+        listOfRegisteredStreaks.append(Date())
         streak += 1
     }
 
     func removeStreak () {
         NSLog("Removing streak")
+        listOfRegisteredStreaks = []
         streak = 0
     }
 
@@ -200,6 +203,13 @@ class UserData: ObservableObject {
     }
     
     func getBetablockerResults () {
+        let lastRegisteredStreak = listOfRegisteredStreaks.last ?? Date(timeIntervalSince1970: 0)
+        let registeredDifferenceInDays = Calendar.current.dateComponents([.day], from: lastRegisteredStreak, to: Date())
+        
+        if (registeredDifferenceInDays.day == 0) {
+            return
+        }
+        
         var query = OCKOutcomeQuery()
         query.taskIDs = ["betablocker"]
         
@@ -212,32 +222,30 @@ class UserData: ObservableObject {
                 case let .success(outcomes):
                     let lastOutcome = outcomes.last as? OCKOutcome
                     NSLog("\(lastOutcome)")
-                    let lastOutcomeDate = lastOutcome?.createdDate ?? Date(timeIntervalSince1970: 0)
-                    if (lastOutcomeDate != Date(timeIntervalSince1970: 0)) {
-                        //TODO: Gjør noe med streak siden datoen er ny
-                        //sjekk om den nye dataen er fra tidligere enn i går
-                        let differenceInDays = Calendar.current.dateComponents([.day], from: self.lastBetablockerCompletion, to: lastOutcomeDate)
+                    let lastOutcomeDate = lastOutcome?.createdDate
+                    
+                    
+                    if (lastOutcomeDate != nil) {
+                        let differenceInDays = Calendar.current.dateComponents([.day], from:     self.lastBetablockerCompletion, to: lastOutcomeDate!)
                         
-                        let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: Date()) ?? Date(timeIntervalSince1970: 0)
-                        NSLog("Yesterday: \(yesterday)")
-                        //let differenceInDays =  Calendar.current.dateComponents([.day], from: yesterday, to: lastOutcomeDate)
-                        NSLog("difference between today and yesterday: \(differenceInDays)")
                         switch differenceInDays.day {
                         case 0:
-                            return
-                        case 1:
                             self.addStreak()
-                        case 19013:
-                            if(!self.firstStreakRegistered) {
-                                self.firstStreakRegistered = true
-                                self.addStreak()
-                            }
+                        case 1:
+                            return
                         default:
-                            self.removeStreak()
+                            if (!self.firstStreakAdded) {
+                                self.addStreak()
+                                self.firstStreakAdded = true
+                            } else {
+                                self.removeStreak()
+                            }
                         }
-                        
-                  
+                            
                     }
+                
+                    
+                  
                 }
             }
     }
