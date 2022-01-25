@@ -32,8 +32,12 @@
 	<string>Your resting heart rate will be used and monitored in order to determine medicine adherence.</string>
 	<key>NSHealthUpdateUsageDescription</key>
 	<string>Your resting heart rate will be used and monitored in order to determine medicine adherence.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location is used to determine if you are close to your medication</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Your microphone will be used when recording videos to confirm your medication adherence.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Your motion usage is used to determine health benefits</string>
 	<key>NSRemindersUsageDescription</key>
 	<string>To schedule medicine reminders</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
