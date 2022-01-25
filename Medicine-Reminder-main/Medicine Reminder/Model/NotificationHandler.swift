@@ -140,6 +140,8 @@ class NotificationHandler {
         var dateComponents = DateComponents()
         dateComponents.calendar = Calendar.current
         
+        NSLog("HOUR: \(hour)")
+        NSLog("MINUTE: \(minute)")
         dateComponents.hour = hour
         dateComponents.minute = minute
         
