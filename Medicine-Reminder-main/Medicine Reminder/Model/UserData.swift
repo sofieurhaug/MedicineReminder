@@ -22,9 +22,9 @@ class UserData: ObservableObject {
     @Published var remindQuestion: Bool = false
     @Published var medicationTime: String = ""
     @Published var streak: Int = 0
-    var lastBetablockerCompletion: Date = Date(timeIntervalSince1970: 0)
-    var lastWarnDate: Date = Date().addingTimeInterval(-604800)
     var listOfRegisteredStreaks: Array<Date> = []
+    var lastAddedStreakDate: Date = Date(timeIntervalSince1970: 0)
+    var lastWarnDate: Date = Date().addingTimeInterval(-604800)
     var firstStreakAdded = false
 
     let notificationHandler = NotificationHandler()
@@ -67,8 +67,8 @@ class UserData: ObservableObject {
         setMedicationTimeNotification(time: time)
     }
     
-    func setLastBetablockerCompletion (date: Date) {
-        lastBetablockerCompletion = date
+    func setLastStreakAddedDate (date: Date) {
+        lastAddedStreakDate = date
     }
 
     func changeNotifyQuestion(bool: Bool) {
@@ -90,6 +90,7 @@ class UserData: ObservableObject {
         NSLog("Adding Streak")
         listOfRegisteredStreaks.append(Date())
         streak += 1
+        setLastStreakAddedDate(date: Date())
     }
 
     func removeStreak () {
@@ -155,15 +156,8 @@ class UserData: ObservableObject {
     }
 
     func setLastWarnDate(date: Date) {
-        if (date != self.lastBetablockerCompletion) {
-            
-        }
         self.lastWarnDate = date
         
-    }
-
-    func setLostStreakNotification () {
-
     }
 
     func increaseBoundary() {
@@ -226,7 +220,7 @@ class UserData: ObservableObject {
                     
                     
                     if (lastOutcomeDate != nil) {
-                        let differenceInDays = Calendar.current.dateComponents([.day], from:     self.lastBetablockerCompletion, to: lastOutcomeDate!)
+                        let differenceInDays = Calendar.current.dateComponents([.day], from:     self.lastAddedStreakDate, to: lastOutcomeDate!)
                         
                         switch differenceInDays.day {
                         case 0:
@@ -243,9 +237,6 @@ class UserData: ObservableObject {
                         }
                             
                     }
-                
-                    
-                  
                 }
             }
     }

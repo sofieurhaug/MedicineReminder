@@ -117,25 +117,6 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
         }
     }
     
-    private func getBetablockerResults () {
-        var query = OCKOutcomeQuery()
-        query.taskIDs = ["betablocker"]
-        
-        storeManager.store.fetchAnyOutcomes(
-            query: query,
-            callbackQueue: .main) { result in
-                switch result {
-                case .failure:
-                    NSLog("Failed to fetch betablocker outcomes")
-                case let .success(outcomes):
-                    let lastOutcome = outcomes.last as? OCKOutcome
-                    NSLog("\(lastOutcome)")
-                    let lastOutcomeDate = lastOutcome?.createdDate ?? Date(timeIntervalSince1970: 0)
-                    self.userData.setLastBetablockerCompletion(date: lastOutcomeDate)
-                }
-            }
-    }
-    
     // MARK: SurveyTaskViewControllerDelegate
       func surveyTask(
           viewController: OCKSurveyTaskViewController,
