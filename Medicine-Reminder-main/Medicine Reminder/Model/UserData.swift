@@ -151,17 +151,13 @@ class UserData: ObservableObject {
 
         DispatchQueue.main.async {
             NSLog("Passed medication time check")
-            self.notificationHandler.SendMedicationReminderNotification(title: "Medication time!", body: "It's time to take your medication", hour: hour, minute: hour)
+            self.notificationHandler.SendMedicationReminderNotification(title: "Medication time!", body: "It's time to take your medication", hour: hour, minute: minute)
         }
     }
 
     func setLastWarnDate(date: Date) {
         self.lastWarnDate = date
         
-    }
-
-    func setLostStreakNotification () {
-
     }
 
     func increaseBoundary() {
