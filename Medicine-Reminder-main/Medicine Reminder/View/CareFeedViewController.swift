@@ -29,49 +29,42 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
         self.userData.getBetablockerResults()
         NSLog("Streak: \(self.userData.streak)")
 
-        checkIfOnboardingIsComplete { isOnboarded in
+        if (!self.userData.getOnboardingFinished()) {
+            let onboardCard = SurveyViewController(taskID: "onboarding", eventQuery: OCKEventQuery(for: Date()), storeManager: self.storeManager)
             
-            guard isOnboarded else {
-                let onboardCard = SurveyViewController(taskID: "onboarding", eventQuery: OCKEventQuery(for: Date()), storeManager: self.storeManager)
+            listViewController.appendViewController(onboardCard, animated: false)
+
+            return
+        }
+
+        // Only show the betablocker task on the current date
+        if Calendar.current.isDate(date, inSameDayAs: Date()) {
+            let identifiers = ["betablocker"]
+            var query = OCKTaskQuery(for: date)
+            query.ids = identifiers
+            query.excludesTasksWithNoEvents = true
+
+            self.storeManager.store.fetchAnyTasks(query: query, callbackQueue: .main) { result in
+                switch result {
                 
-                listViewController.appendViewController(onboardCard, animated: false)
-
-                return
-            }
-            
-            self.getOnboardingResults()
-            
-            // Only show the betablocker task on the current date
-            if Calendar.current.isDate(date, inSameDayAs: Date()) {
-                let identifiers = ["betablocker"]
-                var query = OCKTaskQuery(for: date)
-                query.ids = identifiers
-                query.excludesTasksWithNoEvents = true
-
-                self.storeManager.store.fetchAnyTasks(query: query, callbackQueue: .main) { result in
-                            
-                            switch result {
-                            
-                            case .failure(let error): print("Error in fetchanytasks: \(error)")
-                            case .success(let tasks):
-                                if let betablockerTask = tasks.first(where: { $0.id == "betablocker"}) {
-                                    print("Adding betablocker task")
-                                    let betablockerCard = OCKSimpleTaskViewController(task: betablockerTask, eventQuery: .init(for: date), storeManager: self.storeManager)
-                                    listViewController.appendViewController(betablockerCard, animated: false)
-                                }
-                                
-                                let streakView = StreakView()
-                                streakView.headerView.titleLabel.text = "Streak is \(self.userData.streak)"
-                                listViewController.appendView(streakView, animated: false)
-                                
-                                let betablockerSeries = OCKDataSeriesConfiguration(taskID: "betablocker", legendTitle: "Betablocker", gradientStartColor: self.view.tintColor, gradientEndColor: self.view.tintColor, markerSize: 3, eventAggregator: .countOutcomes)
-                               
-                                let betablockerInsight = OCKCartesianChartViewController(plotType: .scatter, selectedDate: Date(), configurations: [betablockerSeries], storeManager: self.storeManager)
-                                
-                                
-                                listViewController.appendViewController(betablockerInsight, animated: false)
-                                
-                            }
+                case .failure(let error): print("Error in fetchanytasks: \(error)")
+                case .success(let tasks):
+                    if let betablockerTask = tasks.first(where: { $0.id == "betablocker"}) {
+                        print("Adding betablocker task")
+                        let betablockerCard = OCKSimpleTaskViewController(task: betablockerTask, eventQuery: .init(for: date), storeManager: self.storeManager)
+                        listViewController.appendViewController(betablockerCard, animated: false)
+                    }
+                    
+                    let streakView = StreakView()
+                    streakView.headerView.titleLabel.text = "Streak is \(self.userData.streak)"
+                    listViewController.appendView(streakView, animated: false)
+                    
+                    let betablockerSeries = OCKDataSeriesConfiguration(taskID: "betablocker", legendTitle: "Betablocker", gradientStartColor: self.view.tintColor, gradientEndColor: self.view.tintColor, markerSize: 3, eventAggregator: .countOutcomes)
+                   
+                    let betablockerInsight = OCKCartesianChartViewController(plotType: .scatter, selectedDate: Date(), configurations: [betablockerSeries], storeManager: self.storeManager)
+                    
+                    listViewController.appendViewController(betablockerInsight, animated: false)
+                    
                 }
             }
         }
@@ -81,7 +74,6 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
          
     
     private func checkIfOnboardingIsComplete(_ completion: @escaping (Bool) -> Void) {
-
             var query = OCKOutcomeQuery()
             query.taskIDs = ["onboarding"]
 
@@ -98,22 +90,6 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
                 case let .success(outcomes):
                     completion(!outcomes.isEmpty)
             }
-        }
-    }
-    
-    private func getOnboardingResults () {
-        var query = OCKOutcomeQuery()
-        query.taskIDs = ["onboarding"]
-        
-        storeManager.store.fetchAnyOutcomes(
-            query: query,
-            callbackQueue: .main) { result in
-                switch result {
-                case .failure:
-                    print("Failed to fetch onboarding outcomes!")
-                case let .success(outcomes):
-                    NSLog("Onboarding successful")
-                }
         }
     }
     

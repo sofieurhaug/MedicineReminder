@@ -25,8 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     let eventHandler = EventHandler()
     
     //CareKit Store Manager
-    let storeManager = OCKSynchronizedStoreManager(wrapping: OCKStore(name: "com.apple.medrem.carekitstore", type: .inMemory))
-
+    let storeManager = OCKSynchronizedStoreManager(wrapping: OCKStore(name: "com.apple.medrem.carekitstore", type: .onDisk(protection: .complete)))
+    
     let userData = UserData()
     let notificationHandler = NotificationHandler()
     
