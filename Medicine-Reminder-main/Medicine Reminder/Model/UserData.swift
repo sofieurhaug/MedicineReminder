@@ -22,6 +22,8 @@ class UserData: ObservableObject {
     @Published var remindQuestion: Bool = false
     @Published var medicationTime: String = ""
     @Published var streak: Int = 0
+    @Published var onboardingFinished: Bool = false
+    @Published var betablockerOutcomes: Array<OCKAnyOutcome> = []
     var listOfRegisteredStreaks: Array<Date> = []
     var lastAddedStreakDate: Date = Date(timeIntervalSince1970: 0)
     var lastWarnDate: Date = Date().addingTimeInterval(-604800)
@@ -29,7 +31,7 @@ class UserData: ObservableObject {
 
     let notificationHandler = NotificationHandler()
     let eventStore = EKEventStore()
-    let storeManager = OCKSynchronizedStoreManager(wrapping: OCKStore(name: "com.apple.medrem.carekitstore", type: .inMemory))
+    let storeManager = OCKSynchronizedStoreManager(wrapping: OCKStore(name: "com.apple.medrem.carekitstore", type: .onDisk(protection: .complete)))
     
 
 
@@ -40,6 +42,11 @@ class UserData: ObservableObject {
         self.dynamicBoundaryGap = UserDefaults.standard.object(forKey: "dynamicBoundaryGap") as? Double ?? 3.0
         self.medicationTime = UserDefaults.standard.object(forKey: "medicationTime") as? String ?? ""
         self.streak = UserDefaults.standard.object(forKey: "streak") as? Int ?? 0
+        self.lastAddedStreakDate = UserDefaults.standard.object(forKey: "lastAddedStreak") as? Date ?? Date(timeIntervalSince1970: 0)
+        self.firstStreakAdded = UserDefaults.standard.object(forKey: "firstStreakAdded") as? Bool ?? false
+        self.listOfRegisteredStreaks = UserDefaults.standard.object(forKey: "listOfRegisteredStreaks") as? Array<Date> ?? []
+        self.onboardingFinished = UserDefaults.standard.object(forKey: "onboardingFinished") as? Bool ?? false
+        self.betablockerOutcomes = UserDefaults.standard.object(forKey: "betablockerOutcomes") as? Array<OCKAnyOutcome> ?? []
     }
 
     func setLastRestingHR(heartRate: Double) {
@@ -69,6 +76,18 @@ class UserData: ObservableObject {
     
     func setLastStreakAddedDate (date: Date) {
         lastAddedStreakDate = date
+        UserDefaults.standard.set(date, forKey: "lastStreakAddedDate")
+    }
+    
+    func setFirstStreakAdded () {
+        firstStreakAdded = true
+        UserDefaults.standard.set(true, forKey: "firstStreakAdded")
+    }
+    
+    func setOnboardingFinished () {
+        onboardingFinished = true
+        UserDefaults.standard.set(onboardingFinished, forKey: "onboardingFinished")
+        
     }
 
     func changeNotifyQuestion(bool: Bool) {
@@ -91,16 +110,28 @@ class UserData: ObservableObject {
         listOfRegisteredStreaks.append(Date())
         streak += 1
         setLastStreakAddedDate(date: Date())
+        UserDefaults.standard.set(streak, forKey: "streak")
+        UserDefaults.standard.set(listOfRegisteredStreaks, forKey: "listOfRegisteredStreaks")
     }
 
     func removeStreak () {
         NSLog("Removing streak")
         listOfRegisteredStreaks = []
         streak = 0
+        UserDefaults.standard.set(streak, forKey: "streak")
+        UserDefaults.standard.set(listOfRegisteredStreaks, forKey: "listOfRegisteredStreaks")
     }
 
     func getTriggerBoundary() -> Double {
         return triggerBoundary
+    }
+    
+    func getOnboardingFinished () -> Bool {
+        if (onboardingFinished) {
+            return onboardingFinished
+        }
+        getOnboardingResults()
+        return onboardingFinished
     }
 
 
@@ -157,7 +188,6 @@ class UserData: ObservableObject {
 
     func setLastWarnDate(date: Date) {
         self.lastWarnDate = date
-        
     }
 
     func increaseBoundary() {
@@ -213,7 +243,12 @@ class UserData: ObservableObject {
                 switch result {
                 case .failure:
                     NSLog("Failed to fetch betablocker outcomes")
-                case let .success(outcomes):
+                case var .success(outcomes):
+                    
+                    if (outcomes.count == 0) {
+                        outcomes = self.betablockerOutcomes
+                    }
+                    
                     let lastOutcome = outcomes.last as? OCKOutcome
                     NSLog("\(lastOutcome)")
                     let lastOutcomeDate = lastOutcome?.createdDate
@@ -230,7 +265,7 @@ class UserData: ObservableObject {
                         default:
                             if (!self.firstStreakAdded) {
                                 self.addStreak()
-                                self.firstStreakAdded = true
+                                self.setFirstStreakAdded()
                             } else {
                                 self.removeStreak()
                             }
@@ -239,6 +274,23 @@ class UserData: ObservableObject {
                     }
                 }
             }
+    }
+    
+    private func getOnboardingResults ()  {
+        var query = OCKOutcomeQuery()
+        query.taskIDs = ["onboarding"]
+        
+        storeManager.store.fetchAnyOutcomes(
+            query: query,
+            callbackQueue: .main) { result in
+                switch result {
+                case .failure:
+                    print("Failed to fetch onboarding outcomes!")
+                case let .success(outcomes):
+                    NSLog("Onboarding successful")
+                    self.setOnboardingFinished()
+                }
+        }
     }
 
     private func timeChecker() -> Bool {

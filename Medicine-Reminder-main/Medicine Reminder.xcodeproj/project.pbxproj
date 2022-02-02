@@ -680,7 +680,7 @@
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_ENTITLEMENTS = "Medicine Reminder WatchKit Extension/Medicine Reminder WatchKit Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"Medicine Reminder WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = CPN54QHQS8;
 				ENABLE_PREVIEWS = YES;
@@ -707,7 +707,7 @@
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_ENTITLEMENTS = "Medicine Reminder WatchKit Extension/Medicine Reminder WatchKit Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"Medicine Reminder WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = CPN54QHQS8;
 				ENABLE_PREVIEWS = YES;
@@ -736,7 +736,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = CPN54QHQS8;
 				IBSC_MODULE = Medicine_Reminder_WatchKit_Extension;
 				INFOPLIST_FILE = "Medicine Reminder WatchKit App/Info.plist";
@@ -762,7 +762,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = CPN54QHQS8;
 				IBSC_MODULE = Medicine_Reminder_WatchKit_Extension;
 				INFOPLIST_FILE = "Medicine Reminder WatchKit App/Info.plist";
@@ -789,7 +789,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Medicine Reminder/Medicine Reminder.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"Medicine Reminder/Preview Content\"";
 				DEVELOPMENT_TEAM = CPN54QHQS8;
 				ENABLE_PREVIEWS = YES;
@@ -815,7 +815,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Medicine Reminder/Medicine Reminder.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"Medicine Reminder/Preview Content\"";
 				DEVELOPMENT_TEAM = CPN54QHQS8;
 				ENABLE_PREVIEWS = YES;
