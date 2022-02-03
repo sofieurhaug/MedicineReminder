@@ -21,11 +21,10 @@ class UserData: ObservableObject {
     @Published var notifyQuestion: Bool = false
     @Published var remindQuestion: Bool = false
     @Published var medicationTime: String = ""
-    @Published var streak: Int = 0
+    @Published var streak: Int = -1
     @Published var onboardingFinished: Bool = false
     @Published var betablockerOutcomes: Array<OCKAnyOutcome> = []
     var listOfRegisteredStreaks: Array<Date> = []
-    var lastAddedStreakDate: Date = Date(timeIntervalSince1970: 0)
     var lastWarnDate: Date = Date().addingTimeInterval(-604800)
     var firstStreakAdded = false
 
@@ -42,7 +41,6 @@ class UserData: ObservableObject {
         self.dynamicBoundaryGap = UserDefaults.standard.object(forKey: "dynamicBoundaryGap") as? Double ?? 3.0
         self.medicationTime = UserDefaults.standard.object(forKey: "medicationTime") as? String ?? ""
         self.streak = UserDefaults.standard.object(forKey: "streak") as? Int ?? 0
-        self.lastAddedStreakDate = UserDefaults.standard.object(forKey: "lastAddedStreak") as? Date ?? Date(timeIntervalSince1970: 0)
         self.firstStreakAdded = UserDefaults.standard.object(forKey: "firstStreakAdded") as? Bool ?? false
         self.listOfRegisteredStreaks = UserDefaults.standard.object(forKey: "listOfRegisteredStreaks") as? Array<Date> ?? []
         self.onboardingFinished = UserDefaults.standard.object(forKey: "onboardingFinished") as? Bool ?? false
@@ -74,14 +72,9 @@ class UserData: ObservableObject {
         setMedicationTimeNotification(time: time)
     }
     
-    func setLastStreakAddedDate (date: Date) {
-        lastAddedStreakDate = date
-        UserDefaults.standard.set(date, forKey: "lastStreakAddedDate")
-    }
-    
-    func setFirstStreakAdded () {
-        firstStreakAdded = true
-        UserDefaults.standard.set(true, forKey: "firstStreakAdded")
+    func setFirstStreakAdded (added: Bool) {
+        firstStreakAdded = added
+        UserDefaults.standard.set(added, forKey: "firstStreakAdded")
     }
     
     func setOnboardingFinished () {
@@ -109,7 +102,6 @@ class UserData: ObservableObject {
         NSLog("Adding Streak")
         listOfRegisteredStreaks.append(Date())
         streak += 1
-        setLastStreakAddedDate(date: Date())
         UserDefaults.standard.set(streak, forKey: "streak")
         UserDefaults.standard.set(listOfRegisteredStreaks, forKey: "listOfRegisteredStreaks")
     }
@@ -117,7 +109,8 @@ class UserData: ObservableObject {
     func removeStreak () {
         NSLog("Removing streak")
         listOfRegisteredStreaks = []
-        streak = 0
+        streak = -1
+        setFirstStreakAdded(added: false)
         UserDefaults.standard.set(streak, forKey: "streak")
         UserDefaults.standard.set(listOfRegisteredStreaks, forKey: "listOfRegisteredStreaks")
     }
@@ -133,6 +126,7 @@ class UserData: ObservableObject {
         getOnboardingResults()
         return onboardingFinished
     }
+    
 
 
     func setRestingHRs(heartRates: Array<Double>, dates: Array<Date>) {
@@ -226,55 +220,102 @@ class UserData: ObservableObject {
         return false
     }
     
-    func getBetablockerResults () {
-        let lastRegisteredStreak = listOfRegisteredStreaks.last ?? Date(timeIntervalSince1970: 0)
-        let registeredDifferenceInDays = Calendar.current.dateComponents([.day], from: lastRegisteredStreak, to: Date())
-        
-        if (registeredDifferenceInDays.day == 0) {
-            return
-        }
-        
+    func getBetablockerResults () -> Array<OCKAnyOutcome> {
         var query = OCKOutcomeQuery()
         query.taskIDs = ["betablocker"]
-        
+        var fetchedOutcomes: Array<OCKAnyOutcome> = []
         storeManager.store.fetchAnyOutcomes(
             query: query,
             callbackQueue: .main) { result in
-                switch result {
-                case .failure:
-                    NSLog("Failed to fetch betablocker outcomes")
-                case var .success(outcomes):
-                    
-                    if (outcomes.count == 0) {
-                        outcomes = self.betablockerOutcomes
-                    }
-                    
-                    let lastOutcome = outcomes.last as? OCKOutcome
-                    NSLog("\(lastOutcome)")
-                    let lastOutcomeDate = lastOutcome?.createdDate
-                    
-                    
-                    if (lastOutcomeDate != nil) {
-                        let differenceInDays = Calendar.current.dateComponents([.day], from:     self.lastAddedStreakDate, to: lastOutcomeDate!)
-                        
-                        switch differenceInDays.day {
-                        case 0:
-                            self.addStreak()
-                        case 1:
-                            return
-                        default:
-                            if (!self.firstStreakAdded) {
-                                self.addStreak()
-                                self.setFirstStreakAdded()
-                            } else {
-                                self.removeStreak()
-                            }
-                        }
-                            
-                    }
-                }
-            }
+               switch result {
+               case .failure:
+                   NSLog("Failed to fetch betablocker outcomes")
+               case let .success(outcomes):
+                   fetchedOutcomes = outcomes
+               }
+        }
+        return fetchedOutcomes
     }
+    
+    func countStreak () -> Int {
+        let outcomes = getBetablockerResults()
+        let lastOutcome = outcomes.last as? OCKOutcome
+        let lastOutcomeDate = lastOutcome?.createdDate ?? Date(timeIntervalSince1970: 0)
+        
+        var differenceInDays = Calendar.current.dateComponents([.day], from: lastOutcomeDate, to: Date())
+        
+        if (outcomes.count == 1 && differenceInDays.day == 0 ) {
+            addStreak()
+            return 0
+        }
+        var current = lastOutcomeDate
+        var beforeCurrent = lastOutcome
+        var beforeCurrentDate = lastOutcomeDate
+        var streak = -1
+        
+        for index in stride(from: outcomes.count-1, to: 0, by: -1) {
+            beforeCurrent = outcomes[index] as? OCKOutcome
+            beforeCurrentDate = beforeCurrent?.createdDate ?? Date(timeIntervalSince1970: 0)
+            
+            differenceInDays = Calendar.current.dateComponents([.day], from: lastOutcomeDate, to: Date())
+            if (differenceInDays.day == 1) {
+                streak += 1
+            } else {
+                return streak
+            }
+        }
+        return -1
+    }
+    
+    
+//    func getBetablockerResults () -> Array<OCKOutcome> {
+////        let lastRegisteredStreak = listOfRegisteredStreaks.last ?? Date(timeIntervalSince1970: 0)
+////        let registeredDifferenceInDays = Calendar.current.dateComponents([.day], from: lastRegisteredStreak, to: Date())
+////
+////        if (registeredDifferenceInDays.day == 0) {
+////            retur
+////        }
+//
+//        var query = OCKOutcomeQuery()
+//        query.taskIDs = ["betablocker"]
+//
+//        storeManager.store.fetchAnyOutcomes(
+//            query: query,
+//            callbackQueue: .main) { result in
+//                switch result {
+//                case .failure:
+//                    NSLog("Failed to fetch betablocker outcomes")
+//                    return []
+//                case var .success(outcomes):
+//                    return outcomes
+////                    if (outcomes.count == 0) {
+////                        outcomes = self.betablockerOutcomes
+////                    }
+////
+////                    let lastOutcome = outcomes.last as? OCKOutcome
+////                    let lastOutcomeDate = lastOutcome?.createdDate
+////
+////
+////                    if (lastOutcomeDate != nil) {
+////                        let differenceInDays = Calendar.current.dateComponents([.day], from: lastRegisteredStreak, to: lastOutcomeDate!)
+////
+////                        switch differenceInDays.day {
+////                        case 1:
+////                            self.addStreak()
+////                        default:
+////                            if (!self.firstStreakAdded) {
+////                                self.addStreak()
+////                                self.setFirstStreakAdded(added: true)
+////                            } else {
+////                                self.removeStreak()
+////                            }
+////                        }
+////
+////                    }
+//                }
+//            }
+//        return []
+//    }
     
     private func getOnboardingResults ()  {
         var query = OCKOutcomeQuery()
