@@ -56,7 +56,7 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
                     }
                     
                     let streakView = StreakView()
-                    streakView.headerView.titleLabel.text = "Streak is \(self.userData.streak)"
+                    streakView.headerView.titleLabel.text = "Streak is \(self.userData.getStreak())"
                     listViewController.appendView(streakView, animated: false)
                     
                     let betablockerSeries = OCKDataSeriesConfiguration(taskID: "betablocker", legendTitle: "Betablocker", gradientStartColor: self.view.tintColor, gradientEndColor: self.view.tintColor, markerSize: 3, eventAggregator: .countOutcomes)
@@ -69,9 +69,6 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
             }
         }
     }
-            
-           
-         
     
     private func checkIfOnboardingIsComplete(_ completion: @escaping (Bool) -> Void) {
             var query = OCKOutcomeQuery()
@@ -110,7 +107,6 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
 
           event.scheduleEvent.start >= Calendar.current.startOfDay(for: Date())
       }
-    
 }
 
 
