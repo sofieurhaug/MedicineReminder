@@ -104,7 +104,6 @@ class UserData: ObservableObject {
         return dynamicBoundaryGap
     }
 
-
     func addStreak () {
         NSLog("Adding Streak")
         listOfRegisteredStreaks.append(Date())
