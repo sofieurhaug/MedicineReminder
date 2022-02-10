@@ -24,7 +24,6 @@ class UserData: ObservableObject {
     @Published var streak: Int = -1
     @Published var onboardingFinished: Bool = false
     @Published var betablockerOutcomes: Array<OCKAnyOutcome> = []
-    var listOfRegisteredStreaks: Array<Date> = []
     var lastWarnDate: Date = Date().addingTimeInterval(-604800)
     var firstStreakAdded = false
 
@@ -42,7 +41,6 @@ class UserData: ObservableObject {
         self.medicationTime = UserDefaults.standard.object(forKey: "medicationTime") as? String ?? ""
         self.streak = UserDefaults.standard.object(forKey: "streak") as? Int ?? 0
         self.firstStreakAdded = UserDefaults.standard.object(forKey: "firstStreakAdded") as? Bool ?? false
-        self.listOfRegisteredStreaks = UserDefaults.standard.object(forKey: "listOfRegisteredStreaks") as? Array<Date> ?? []
         self.onboardingFinished = UserDefaults.standard.object(forKey: "onboardingFinished") as? Bool ?? false
         self.betablockerOutcomes = UserDefaults.standard.object(forKey: "betablockerOutcomes") as? Array<OCKAnyOutcome> ?? []
     }
@@ -109,11 +107,9 @@ class UserData: ObservableObject {
 
     func removeStreak () {
         NSLog("Removing streak")
-        listOfRegisteredStreaks = []
         streak = -1
         setFirstStreakAdded(added: false)
         UserDefaults.standard.set(streak, forKey: "streak")
-        UserDefaults.standard.set(listOfRegisteredStreaks, forKey: "listOfRegisteredStreaks")
     }
 
     func getTriggerBoundary() -> Double {
@@ -223,30 +219,33 @@ class UserData: ObservableObject {
     func getBetablockerResults () {
         var query = OCKOutcomeQuery()
         query.taskIDs = ["betablocker"]
-        var fetchedOutcomes: [OCKAnyOutcome] = []
 
         storeManager.store.fetchAnyOutcomes(query: query, callbackQueue: .main) { result in
                switch result {
                case .failure:
                    NSLog("Failed to fetch betablocker outcomes")
                case let .success(outcomes):
+                   self.betablockerOutcomes = outcomes
                    self.countStreak(outcomes: outcomes)
                }
         }
     }
 
     func countStreak (outcomes: [OCKAnyOutcome]) {
-        let lastOutcome = outcomes.last as? OCKOutcome
+        let lastOutcome = outcomes.first as? OCKOutcome
         let lastOutcomeDate = lastOutcome?.createdDate ?? Date(timeIntervalSince1970: 0)
-
+        NSLog("Lastoutcomedate = \(lastOutcomeDate)")
+        
         var differenceInDays = Calendar.current.dateComponents([.day], from: lastOutcomeDate, to: Date())
 
         if (outcomes.count == 1 && differenceInDays.day == 0 ) {
+            NSLog("Setting streak to 0 because its the first day of registered outcomes")
             setStreak(streak: 0)
             return
         }
 
         if (differenceInDays.day! > 1) {
+            NSLog("Setting streak to 0 because of difference in days are bigger than 1")
             setStreak(streak: 0)
             return
         }
@@ -257,16 +256,21 @@ class UserData: ObservableObject {
         var beforeCurrentDate = lastOutcomeDate
         var streak = 0
 
-        for index in stride(from: outcomes.count-2, to: -1, by: -1) {
+        for index in stride(from: 1, to: outcomes.count, by: 1) {
+            
             NSLog("Index: \(index)")
             beforeCurrent = outcomes[index] as? OCKOutcome
             beforeCurrentDate = Calendar.current.startOfDay(for: beforeCurrent?.createdDate ?? Date(timeIntervalSince1970: 0))
+            NSLog("Current: \(current)")
+            NSLog("Before: \(beforeCurrentDate)")
 
-            differenceInDays = Calendar.current.dateComponents([.day], from: current , to: beforeCurrentDate)
+            differenceInDays = Calendar.current.dateComponents([.day], from: beforeCurrentDate , to: current)
+            NSLog("Difference: \(differenceInDays)")
 
             if (differenceInDays.day == 1) {
                 streak += 1
                 current = beforeCurrentDate
+                NSLog("Streak is currently \(streak)")
             } else {
                 setStreak(streak: streak)
                 return
@@ -285,7 +289,7 @@ class UserData: ObservableObject {
                 switch result {
                 case .failure:
                     print("Failed to fetch onboarding outcomes!")
-                case let .success(_):
+                case .success(_):
                     NSLog("Onboarding successful")
                     self.setOnboardingFinished()
                 }
