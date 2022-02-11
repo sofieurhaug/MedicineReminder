@@ -55,8 +55,8 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
                         listViewController.appendViewController(betablockerCard, animated: false)
                     }
                     
-                    let streakView = StreakView()
-                    streakView.headerView.titleLabel.text = "Streak is \(self.userData.getStreak())"
+                    let streakView = StreakView(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
+                    //streakView.headerView.titleLabel.text = "Streak is \(self.userData.getStreak())"
                     listViewController.appendView(streakView, animated: false)
                     
                     let betablockerSeries = OCKDataSeriesConfiguration(taskID: "betablocker", legendTitle: "Betablocker", gradientStartColor: self.view.tintColor, gradientEndColor: self.view.tintColor, markerSize: 3, eventAggregator: .countOutcomes)

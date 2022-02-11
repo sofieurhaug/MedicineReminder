@@ -9,12 +9,12 @@ import Foundation
 import UIKit
 import CareKitUI
 
-class StreakView: OCKView, OCKCardable {
+class StreakView: UIView {
+    
 
     var cardView: UIView { self }
     let contentView: UIView = OCKView()
     let headerView = OCKHeaderView()
-    let imageView = UIImageView()
     var imageHeightConstraint: NSLayoutConstraint!
 
     private let blurView: UIVisualEffectView = {
@@ -22,8 +22,8 @@ class StreakView: OCKView, OCKCardable {
         return UIVisualEffectView(effect: blurEffect)
     }()
 
-    override init() {
-        super.init()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setup()
     }
 
@@ -34,10 +34,6 @@ class StreakView: OCKView, OCKCardable {
     private func setup() {
         headerView.detailLabel.textColor = .secondaryLabel
 
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = layer.cornerRadius
-
         blurView.clipsToBounds = true
         blurView.layer.cornerRadius = layer.cornerRadius
         blurView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
@@ -46,15 +42,13 @@ class StreakView: OCKView, OCKCardable {
         contentView.frame = bounds
 
         addSubview(contentView)
-        contentView.addSubview(imageView)
         contentView.addSubview(blurView)
         contentView.addSubview(headerView)
 
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+       
         blurView.translatesAutoresizingMaskIntoConstraints = false
         headerView.translatesAutoresizingMaskIntoConstraints = false
-        imageHeightConstraint = imageView.heightAnchor.constraint(
-            equalToConstant: scaledImageHeight(compatibleWith: traitCollection))
+        
 
         NSLayoutConstraint.activate([
             headerView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
@@ -66,11 +60,6 @@ class StreakView: OCKView, OCKCardable {
             blurView.topAnchor.constraint(equalTo: contentView.topAnchor),
             blurView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 16),
 
-            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            imageHeightConstraint
         ])
     }
 
@@ -83,12 +72,5 @@ class StreakView: OCKView, OCKCardable {
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
             imageHeightConstraint.constant = scaledImageHeight(compatibleWith: traitCollection)
         }
-    }
-
-    override func styleDidChange() {
-        super.styleDidChange()
-        let cachedStyle = style()
-        enableCardStyling(true, style: cachedStyle)
-        directionalLayoutMargins = cachedStyle.dimension.directionalInsets1
-    }
+    }t
 }
