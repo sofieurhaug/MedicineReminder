@@ -36,6 +36,15 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
 
             return
         }
+        
+        //Show feedback of the current week if its a sunday
+        if userData.sundayChecker(date: Date()) {
+            NSLog("Her må det inn et card som sier noe om hva de har gjort denne uken")
+            let feedbackView = FeedbackView()
+            feedbackView.headerView.titleLabel.text = "Your week summary"
+            feedbackView.headerView.detailLabel.text = "This week you have taken your medication 7/7 days, good job!"
+            listViewController.appendView(feedbackView, animated: false)
+        }
 
         // Only show the betablocker task on the current date
         if Calendar.current.isDate(date, inSameDayAs: Date()) {

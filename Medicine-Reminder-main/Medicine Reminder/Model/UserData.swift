@@ -318,4 +318,74 @@ class UserData: ObservableObject {
         }
         return false
     }
+    
+    func sundayChecker (date: Date) ->  Bool {
+        let calendar: Calendar = Calendar.current
+        NSLog("Date we are checking: \(date)")
+        let isSunday = calendar.component(Calendar.Component.weekday, from: date) == 1
+        NSLog("\(calendar.component(Calendar.Component.weekday, from: date))")
+        return true
+        return isSunday
+    }
+    
+    func addFeedback () -> String {
+        let feedback = checkWhichFeedback()
+        switch feedback {
+        case .perfect:
+            return "Well done! You have taken your medication every day this week 👏"
+        case .good:
+            return "This week you remembered your medication for the most part. Keep going, you'll make it to 7/7 next week!"
+        case .average:
+            return "Only "
+        case .bad:
+            return ""
+        case .horrible:
+            return ""
+        case .error:
+            return ""
+        }
+    }
+    
+    func checkWhichFeedback () -> Feedback {
+        switch numberOfMedicatedDaysThisWeek() {
+        case 0:
+            return .horrible
+        case 1-2:
+            return .bad
+        case 3-4:
+            return .average
+        case 5-6:
+            return .good
+        case 7:
+            return .perfect
+        default:
+            return .error
+        }
+    }
+    
+    func numberOfMedicatedDaysThisWeek () -> Int {
+        var numberOfDays = 0
+        var outcome = self.betablockerOutcomes[0] as? OCKOutcome
+        var outcomeDate = outcome?.createdDate ?? Date(timeIntervalSince1970: 0)
+        
+        for i in 0...6 {
+            outcome = self.betablockerOutcomes[i] as? OCKOutcome
+            outcomeDate = outcome?.createdDate ?? Date(timeIntervalSince1970: 0)
+    
+            if(dateWithinWeek(date: outcomeDate)) {
+                numberOfDays += 1
+            } else {
+                return numberOfDays
+            }
+        }
+        return numberOfDays
+    }
+    
+    func dateWithinWeek (date: Date) -> Bool {
+        let currentComponents = Calendar.current.dateComponents([.weekOfYear], from: Date())
+        let dateComponents = Calendar.current.dateComponents([.weekOfYear], from: date)
+        guard let currentWeekOfYear = currentComponents.weekOfYear, let dateWeekOfYear = dateComponents.weekOfYear else { return false }
+        
+        return currentWeekOfYear == dateWeekOfYear
+    }
 }
