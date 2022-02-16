@@ -49,7 +49,9 @@ struct Surveys {
             bodyItemStyle: .image
         )
         
-        let streakLevelBodyItem = ORKBodyItem(text: "You will gain streak and increase your level if you take your medication every single day.", detailText: nil, image: UIImage(systemName: "flame.fill"), learnMoreItem: nil, bodyItemStyle: .image)
+        let streakLevelBodyItem = ORKBodyItem(text: "You will gain streak and increase your level if you take your medication every single day. For us to keep track of your streak you have open the app and register that you have taken your medication that day.", detailText: nil, image: UIImage(systemName: "flame.fill"), learnMoreItem: nil, bodyItemStyle: .image)
+        
+        let notificationBodyItem = ORKBodyItem(text: "To help you remember your medication we will set a notification to appear at a time that you choose.", detailText: nil, image: UIImage(systemName: "alarm.fill"), learnMoreItem: nil, bodyItemStyle: .image)
 
         let secureDataBodyItem = ORKBodyItem(
             text: "Your data is kept private and secure.",
@@ -63,27 +65,19 @@ struct Surveys {
             heartBodyItem,
             completeTasksBodyItem,
             streakLevelBodyItem,
+            notificationBodyItem,
             secureDataBodyItem
         ]
 
         
         // The Request Permissions step.
-        let healthKitTypesToWrite: Set<HKSampleType> = [
-            HKObjectType.quantityType(forIdentifier: .bodyMassIndex)!,
-            HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
-            HKObjectType.workoutType()
-        ]
 
         let healthKitTypesToRead: Set<HKObjectType> = [
-            HKObjectType.characteristicType(forIdentifier: .dateOfBirth)!,
-            HKObjectType.workoutType(),
-            HKObjectType.quantityType(forIdentifier: .appleStandTime)!,
-            HKObjectType.quantityType(forIdentifier: .appleExerciseTime)!
+            HKObjectType.quantityType(forIdentifier: .restingHeartRate)!
         ]
 
-        let healthKitPermissionType = ORKHealthKitPermissionType(
-            sampleTypesToWrite: healthKitTypesToWrite,
-            objectTypesToRead: healthKitTypesToRead
+        let healthKitPermissionType =  ORKHealthKitPermissionType(
+            sampleTypesToWrite: nil, objectTypesToRead: healthKitTypesToRead
         )
 
         let notificationsPermissionType = ORKNotificationPermissionType(
