@@ -333,7 +333,6 @@ class UserData: ObservableObject {
         NSLog("Date we are checking: \(date)")
         let isSunday = calendar.component(Calendar.Component.weekday, from: date) == 1
         NSLog("\(calendar.component(Calendar.Component.weekday, from: date))")
-        return true
         return isSunday
     }
     
@@ -375,11 +374,11 @@ class UserData: ObservableObject {
     func numberOfMedicatedDaysThisWeek () -> Int {
         var numberOfDays = 0
         NSLog("FEEDBACK: Outcomes in counting: \(self.betablockerOutcomes)")
-        var outcome = self.betablockerOutcomes.first as? OCKOutcome 
-        var outcomeDate = outcome?.createdDate ?? Date(timeIntervalSince1970: 0)
         
-        for i in 0...6 {
-            outcomeDate = outcome?.createdDate ?? Date(timeIntervalSince1970: 0)
+        
+        for outcome in self.betablockerOutcomes {
+            let ockOutcome = outcome as? OCKOutcome
+            let outcomeDate = ockOutcome?.createdDate ?? Date(timeIntervalSince1970: 0)
     
             if(dateWithinWeek(date: outcomeDate)) {
                 numberOfDays += 1
@@ -387,7 +386,6 @@ class UserData: ObservableObject {
                 NSLog("FEEDBACK: returning \(numberOfDays)")
                 return numberOfDays
             }
-            outcome = self.betablockerOutcomes[i] as? OCKOutcome
         }
         NSLog("FEEDBACK: returning \(numberOfDays)")
         return numberOfDays
