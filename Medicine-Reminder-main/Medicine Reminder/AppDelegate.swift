@@ -266,8 +266,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     private func seedTasks() {
         
-        self.userData.getBetablockerResults()
-        
         let onboardSchedule = OCKSchedule.dailyAtTime(
                             hour: 0, minutes: 0,
                             start: Date(), end: nil,
@@ -303,7 +301,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
         }
     }
-
+    
     // MARK: - UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
