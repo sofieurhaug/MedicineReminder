@@ -26,9 +26,7 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
     override func dailyPageViewController(_ dailyPageViewController: OCKDailyPageViewController, prepare listViewController: OCKListViewController, for date: Date) {
         
         NSLog("Refreshed!")
-        self.userData.getBetablockerResults()
-        NSLog("Streak: \(self.userData.streak)")
-
+        
         if (!self.userData.getOnboardingFinished()) {
             let onboardCard = SurveyViewController(taskID: "onboarding", eventQuery: OCKEventQuery(for: Date()), storeManager: self.storeManager)
             
@@ -37,45 +35,62 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
             return
         }
         
-        //Show feedback of the current week if its a sunday
-        if userData.sundayChecker(date: Date()) {
-            let feedbackView = FeedbackView()
-            feedbackView.headerView.titleLabel.text = "Your week summary"
-            feedbackView.headerView.detailLabel.text = self.userData.getFeedback()
-            listViewController.appendView(feedbackView, animated: false)
-        }
+        var betablockerOutcomeQuery = OCKOutcomeQuery()
+        betablockerOutcomeQuery.taskIDs = ["betablocker"]
 
-        // Only show the betablocker task on the current date
-        if Calendar.current.isDate(date, inSameDayAs: Date()) {
-            let identifiers = ["betablocker"]
-            var query = OCKTaskQuery(for: date)
-            query.ids = identifiers
-            query.excludesTasksWithNoEvents = true
-
-            self.storeManager.store.fetchAnyTasks(query: query, callbackQueue: .main) { result in
-                switch result {
-                
-                case .failure(let error): print("Error in fetchanytasks: \(error)")
-                case .success(let tasks):
-                    if let betablockerTask = tasks.first(where: { $0.id == "betablocker"}) {
-                        print("Adding betablocker task")
-                        let betablockerCard = OCKSimpleTaskViewController(task: betablockerTask, eventQuery: .init(for: date), storeManager: self.storeManager)
-                        listViewController.appendViewController(betablockerCard, animated: false)
-                    }
-                    
-                    let streakView = StreakView()
-                    streakView.headerView.titleLabel.text = "Current streak  \(self.userData.getStreak()) 🔥"
-                    listViewController.appendView(streakView, animated: false)
-                    
-                    let betablockerSeries = OCKDataSeriesConfiguration(taskID: "betablocker", legendTitle: "Betablocker", gradientStartColor: self.view.tintColor, gradientEndColor: self.view.tintColor, markerSize: 3, eventAggregator: .countOutcomes)
+        storeManager.store.fetchAnyOutcomes(query: betablockerOutcomeQuery, callbackQueue: .main) { result in
+               switch result {
+               case .failure:
+                   NSLog("Failed to fetch betablocker outcomes")
+               case let .success(outcomes):
+                   NSLog("BETABLOCKER: outcomes gotten \(outcomes)")
+                   self.userData.betablockerOutcomes = outcomes
+                   self.userData.countStreak(outcomes: outcomes)
+                   self.userData.setFeedback(feedback: self.userData.getFeedback())
                    
-                    let betablockerInsight = OCKCartesianChartViewController(plotType: .scatter, selectedDate: Date(), configurations: [betablockerSeries], storeManager: self.storeManager)
-                    
-                    listViewController.appendViewController(betablockerInsight, animated: false)
-                    
-                }
-            }
+                   //Show feedback of the current week if its a sunday
+                   if self.userData.sundayChecker(date: Date()) {
+                       let feedbackView = FeedbackView()
+                       feedbackView.headerView.titleLabel.text = "Your week summary"
+                       feedbackView.headerView.detailLabel.text = self.userData.getFeedback()
+                       listViewController.appendView(feedbackView, animated: false)
+                   }
+
+                   // Only show the betablocker task on the current date
+                   if Calendar.current.isDate(date, inSameDayAs: Date()) {
+                       let identifiers = ["betablocker"]
+                       var query = OCKTaskQuery(for: date)
+                       query.ids = identifiers
+                       query.excludesTasksWithNoEvents = true
+
+                       self.storeManager.store.fetchAnyTasks(query: query, callbackQueue: .main) { result in
+                           switch result {
+                           
+                           case .failure(let error): print("Error in fetchanytasks: \(error)")
+                           case .success(let tasks):
+                               if let betablockerTask = tasks.first(where: { $0.id == "betablocker"}) {
+                                   print("Adding betablocker task")
+                                   let betablockerCard = OCKSimpleTaskViewController(task: betablockerTask, eventQuery: .init(for: date), storeManager: self.storeManager)
+                                   listViewController.appendViewController(betablockerCard, animated: false)
+                               }
+                               
+                               let streakView = StreakView()
+                               streakView.headerView.titleLabel.text = "Current streak  \(self.userData.getStreak()) 🔥"
+                               listViewController.appendView(streakView, animated: false)
+                               
+                               let betablockerSeries = OCKDataSeriesConfiguration(taskID: "betablocker", legendTitle: "Betablocker", gradientStartColor: self.view.tintColor, gradientEndColor: self.view.tintColor, markerSize: 3, eventAggregator: .countOutcomes)
+                              
+                               let betablockerInsight = OCKCartesianChartViewController(plotType: .scatter, selectedDate: Date(), configurations: [betablockerSeries], storeManager: self.storeManager)
+                               
+                               listViewController.appendViewController(betablockerInsight, animated: false)
+                               
+                           }
+                       }
+                   }
+               }
         }
+        
+        
     }
     
     private func checkIfOnboardingIsComplete(_ completion: @escaping (Bool) -> Void) {

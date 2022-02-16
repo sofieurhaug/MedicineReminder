@@ -103,7 +103,6 @@ class UserData: ObservableObject {
     }
 
     func getStreak () -> Int {
-        getBetablockerResults()
         return streak
     }
 
@@ -223,22 +222,6 @@ class UserData: ObservableObject {
         return false
     }
 
-    func getBetablockerResults () {
-        var query = OCKOutcomeQuery()
-        query.taskIDs = ["betablocker"]
-
-        storeManager.store.fetchAnyOutcomes(query: query, callbackQueue: .main) { result in
-               switch result {
-               case .failure:
-                   NSLog("Failed to fetch betablocker outcomes")
-               case let .success(outcomes):
-                   NSLog("BETABLOCKER: outcomes gotten \(outcomes)")
-                   self.betablockerOutcomes = outcomes
-                   self.countStreak(outcomes: outcomes)
-                   self.setFeedback(feedback: self.getFeedback())
-               }
-        }
-    }
 
     func countStreak (outcomes: [OCKAnyOutcome]) {
         let lastOutcome = outcomes.first as? OCKOutcome
