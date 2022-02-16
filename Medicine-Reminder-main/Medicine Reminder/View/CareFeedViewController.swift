@@ -39,10 +39,9 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
         
         //Show feedback of the current week if its a sunday
         if userData.sundayChecker(date: Date()) {
-            NSLog("Her må det inn et card som sier noe om hva de har gjort denne uken")
             let feedbackView = FeedbackView()
             feedbackView.headerView.titleLabel.text = "Your week summary"
-            feedbackView.headerView.detailLabel.text = "This week you have taken your medication 7/7 days, good job!"
+            feedbackView.headerView.detailLabel.text = self.userData.getFeedback()
             listViewController.appendView(feedbackView, animated: false)
         }
 
@@ -65,7 +64,7 @@ final class CareFeedViewController : OCKDailyPageViewController, OCKSurveyTaskVi
                     }
                     
                     let streakView = StreakView()
-                    streakView.headerView.titleLabel.text = "Streak is \(self.userData.getStreak())"
+                    streakView.headerView.titleLabel.text = "Current streak  \(self.userData.getStreak()) 🔥"
                     listViewController.appendView(streakView, animated: false)
                     
                     let betablockerSeries = OCKDataSeriesConfiguration(taskID: "betablocker", legendTitle: "Betablocker", gradientStartColor: self.view.tintColor, gradientEndColor: self.view.tintColor, markerSize: 3, eventAggregator: .countOutcomes)
