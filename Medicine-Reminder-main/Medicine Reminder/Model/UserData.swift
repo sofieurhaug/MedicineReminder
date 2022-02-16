@@ -24,6 +24,7 @@ class UserData: ObservableObject {
     @Published var streak: Int = -1
     @Published var onboardingFinished: Bool = false
     @Published var betablockerOutcomes: Array<OCKAnyOutcome> = []
+    @Published var feedback: String = ""
     var lastWarnDate: Date = Date().addingTimeInterval(-604800)
     var firstStreakAdded = false
 
@@ -43,6 +44,7 @@ class UserData: ObservableObject {
         self.firstStreakAdded = UserDefaults.standard.object(forKey: "firstStreakAdded") as? Bool ?? false
         self.onboardingFinished = UserDefaults.standard.object(forKey: "onboardingFinished") as? Bool ?? false
         self.betablockerOutcomes = UserDefaults.standard.object(forKey: "betablockerOutcomes") as? Array<OCKAnyOutcome> ?? []
+        self.feedback = UserDefaults.standard.object(forKey: "feedback") as? String ?? ""
     }
 
     func setLastRestingHR(heartRate: Double) {
@@ -179,6 +181,11 @@ class UserData: ObservableObject {
     func setLastWarnDate(date: Date) {
         self.lastWarnDate = date
     }
+    
+    func setFeedback (feedback: String) {
+        self.feedback = feedback
+        UserDefaults.standard.set(feedback, forKey: "feedback")
+    }
 
     func increaseBoundary() {
         NSLog("Increasing boundary by \(self.dynamicBoundaryGap)")
@@ -225,8 +232,10 @@ class UserData: ObservableObject {
                case .failure:
                    NSLog("Failed to fetch betablocker outcomes")
                case let .success(outcomes):
+                   NSLog("BETABLOCKER: outcomes gotten \(outcomes)")
                    self.betablockerOutcomes = outcomes
                    self.countStreak(outcomes: outcomes)
+                   self.setFeedback(feedback: self.getFeedback())
                }
         }
     }
@@ -318,4 +327,82 @@ class UserData: ObservableObject {
         }
         return false
     }
+    
+    func sundayChecker (date: Date) ->  Bool {
+        let calendar: Calendar = Calendar.current
+        NSLog("Date we are checking: \(date)")
+        let isSunday = calendar.component(Calendar.Component.weekday, from: date) == 1
+        NSLog("\(calendar.component(Calendar.Component.weekday, from: date))")
+        return true
+        return isSunday
+    }
+    
+    func getFeedback () -> String {
+        let feedback = checkWhichFeedback()
+        switch feedback {
+        case .perfect:
+            return "Well done! You have taken your medication every day this week 👏"
+        case .good:
+            return "This week you remembered your medication for the most part. Keep going, you'll make it to 7/7 next week!"
+        case .average:
+            return "This week you only remembered your medication half of the time, work better to remember your medication next week!"
+        case .bad:
+            return "This was not a good week, to improve the effect of your medication take your medication everyday next week! You can do it!"
+        case .horrible:
+            return "You haven't taken your medicine all week, try to put the medication somewhere you can see them so that you take them next week as well!"
+        case .error:
+            return "An error has occured"
+        }
+    }
+    
+    func checkWhichFeedback () -> Feedback {
+        switch numberOfMedicatedDaysThisWeek() {
+        case 0:
+            return .horrible
+        case 1...2:
+            return .bad
+        case 3...4:
+            return .average
+        case 5...6:
+            return .good
+        case 7:
+            return .perfect
+        default:
+            return .error
+        }
+    }
+    
+    func numberOfMedicatedDaysThisWeek () -> Int {
+        var numberOfDays = 0
+        NSLog("FEEDBACK: Outcomes in counting: \(self.betablockerOutcomes)")
+        var outcome = self.betablockerOutcomes.first as? OCKOutcome 
+        var outcomeDate = outcome?.createdDate ?? Date(timeIntervalSince1970: 0)
+        
+        for i in 0...6 {
+            outcomeDate = outcome?.createdDate ?? Date(timeIntervalSince1970: 0)
+    
+            if(dateWithinWeek(date: outcomeDate)) {
+                numberOfDays += 1
+            } else {
+                NSLog("FEEDBACK: returning \(numberOfDays)")
+                return numberOfDays
+            }
+            outcome = self.betablockerOutcomes[i] as? OCKOutcome
+        }
+        NSLog("FEEDBACK: returning \(numberOfDays)")
+        return numberOfDays
+    }
+    
+    func dateWithinWeek (date: Date) -> Bool {
+        let currentComponents = Calendar.current.dateComponents([.weekOfYear], from: Date())
+        let dateComponents = Calendar.current.dateComponents([.weekOfYear], from: date)
+        guard let currentWeekOfYear = currentComponents.weekOfYear, let dateWeekOfYear = dateComponents.weekOfYear else { return false }
+        
+        return currentWeekOfYear == dateWeekOfYear
+    }
+}
+
+
+enum Feedback {
+    case perfect, good, average, bad, horrible, error
 }

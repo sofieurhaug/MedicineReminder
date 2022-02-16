@@ -28,6 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     let storeManager = OCKSynchronizedStoreManager(wrapping: OCKStore(name: "com.apple.medrem.carekitstore", type: .onDisk(protection: .complete)))
     
     let userData = UserData()
+
     let notificationHandler = NotificationHandler()
     
     
@@ -264,6 +265,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     private func seedTasks() {
+        
+        self.userData.getBetablockerResults()
+        
         let onboardSchedule = OCKSchedule.dailyAtTime(
                             hour: 0, minutes: 0,
                             start: Date(), end: nil,

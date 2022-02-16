@@ -1,4 +1,11 @@
 //
+//  FeedbackView.swift
+//  Medicine Reminder
+//
+//  Created by Sofie Tjønneland Urhaug on 15/02/2022.
+//
+
+//
 //  StreakView.swift
 //  Medicine Reminder
 //
@@ -9,7 +16,7 @@ import Foundation
 import UIKit
 import CareKitUI
 
-class StreakView: OCKView, OCKCardable {
+class FeedbackView: OCKView, OCKCardable {
 
     var cardView: UIView { self }
     let contentView: UIView = OCKView()
@@ -75,7 +82,7 @@ class StreakView: OCKView, OCKCardable {
     }
 
     func scaledImageHeight(compatibleWith traitCollection: UITraitCollection) -> CGFloat {
-        return UIFontMetrics.default.scaledValue(for: 50, compatibleWith: traitCollection)
+        return UIFontMetrics.default.scaledValue(for: 100, compatibleWith: traitCollection)
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
